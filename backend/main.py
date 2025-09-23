@@ -14,7 +14,7 @@ origins = [
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # or ["*"] to allow all
+    allow_origins=origins,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -22,12 +22,38 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return RedirectResponse(url='/teams')
+    return RedirectResponse(url='/nbateams')
 
 
-@app.get("/teams")
+@app.get("/nbateams")
 def get_teams():
-    cursor.execute("SELECT * FROM teams")
+    cursor.execute("SELECT * FROM nba_teams")
+    rows = cursor.fetchall()
+    teams = [
+        {
+            "id": row[0],
+            "name": row[1],
+            "wins": row[2],
+            "losses": row[3],
+            "win_percentage": row[4],
+            "points_for": row[5],
+            "points_against": row[6],
+            "points_differential": row[7]
+        }
+        for row in rows
+    ]
+    return {"nba_teams": teams}
+
+@app.get("/nflteams")
+def get_teams():
+    cursor.execute("SELECT * FROM nfl_teams")
+    teams = cursor.fetchall()
+    return {"teams": teams}
+
+
+@app.get("/mlbteams")
+def get_teams():
+    cursor.execute("SELECT * FROM mlb_teams")
     teams = cursor.fetchall()
     return {"teams": teams}
 
