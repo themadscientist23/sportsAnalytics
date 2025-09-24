@@ -47,14 +47,41 @@ def get_teams():
 @app.get("/nflteams")
 def get_teams():
     cursor.execute("SELECT * FROM nfl_teams")
-    teams = cursor.fetchall()
-    return {"teams": teams}
+    rows = cursor.fetchall()
+    teams = [
+        {
+            "id": row[0],
+            "name": row[1],
+            "wins": row[2],
+            "losses": row[3],
+            "ties": row[4],
+            "win_percentage": row[5],
+            "points_for": row[6],
+            "points_against": row[7],
+            "points_differential": row[8]
+        }
+        for row in rows
+    ]
+    return {"nfl_teams": teams}
 
 
 @app.get("/mlbteams")
 def get_teams():
     cursor.execute("SELECT * FROM mlb_teams")
-    teams = cursor.fetchall()
-    return {"teams": teams}
+    rows = cursor.fetchall()
+    teams = [
+        {
+            "id": row[0],
+            "name": row[1],
+            "wins": row[2],
+            "losses": row[3],
+            "win_percentage": row[4],
+            "points_for": row[5],
+            "points_against": row[6],
+            "points_differential": row[7]
+        }
+        for row in rows
+    ]
+    return {"mlb_teams": teams}
 
 

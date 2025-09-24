@@ -188,7 +188,6 @@ if cursor.fetchone() is None:
          for team in nba_teams]
     )
 
-conn.commit()
 
 
 conn.commit()

@@ -1,49 +1,29 @@
 import { useState, useEffect } from 'react';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Nav from './Nav.jsx';
+import Homepage from './Homepage.jsx';
+import NbaTeamsComp from './NBATeamsComp.jsx';
+import NflTeamsComp from './NFLTeamsComp.jsx';
+import MlbTeamsComp from './MLBTeamsComp.jsx';
+import './index.css';
+
+function NotFound() {
+  return <h1>Error 404 - Airball</h1>;
+}
 
 function App() {
-  const [nbaTeams, setNbaTeams] = useState([]);
-
-  useEffect(() => {
-    fetch('http://127.0.0.1:8000/nbateams')  
-      .then(response => response.json())
-      .then(data => {
-        setNbaTeams(data.nba_teams); 
-        console.log("Fetched NBA teams:", data.nba_teams);
-      })
-      .catch(error => console.error('Houston: we have a problem:', error));
-  }, []);
 
   return (
-    <div>
-      <h1>NBA Teams</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Team</th>
-            <th>Wins</th>
-            <th>Losses</th>
-            <th>Win %</th>
-            <th>Points For</th>
-            <th>Points Against</th>
-            <th>Point Differential</th>
-          </tr>
-        </thead>
-        <tbody>
-          {nbaTeams.map(team => (
-            <tr key={team.id}>
-              <td>{team.name}</td>
-              <td>{team.wins}</td>
-              <td>{team.losses}</td>
-              <td>{team.win_percentage}</td>
-              <td>{team.points_for}</td>
-              <td>{team.points_against}</td>
-              <td>{team.points_differential}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <Router>
+      <Nav />
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/nba" element={<NbaTeamsComp />} />
+        <Route path="/nfl" element={<NflTeamsComp />} />
+        <Route path="/mlb" element={<MlbTeamsComp />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   );
 }
 
