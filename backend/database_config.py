@@ -3,7 +3,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 
-
 api = BalldontlieAPI(api_key="7c8468fa-393e-49cc-92c2-bf25160a6f8c")
 
 

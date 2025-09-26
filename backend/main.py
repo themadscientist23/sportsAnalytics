@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from db import get_db_session, close_session
+from database_config import get_db_session, close_session
 from models import NBATeam, NFLTeam, MLBTeam
 
 app = FastAPI(title="Sports Analytics API")
@@ -22,12 +22,14 @@ app.add_middleware(
 def read_root():
     return {"message": "Sports Analytics API is running."}
 
+
 @app.get("/nbateams")
 def get_nba_teams():
     session = get_db_session()
     teams = session.query(NBATeam).all()
-    result = {
-        t.id: {
+    result = [
+        {
+            "id": t.id,
             "name": t.name,
             "wins": t.wins,
             "losses": t.losses,
@@ -39,16 +41,18 @@ def get_nba_teams():
             "updated_at": t.updated_at
         }
         for t in teams
-    }
+    ]
     close_session(session)
-    return {"nba_teams": result}
+    return result
+
 
 @app.get("/nflteams")
 def get_nfl_teams():
     session = get_db_session()
     teams = session.query(NFLTeam).all()
-    result = {
-        t.id: {
+    result = [
+        {
+            "id": t.id,
             "name": t.name,
             "wins": t.wins,
             "losses": t.losses,
@@ -61,16 +65,18 @@ def get_nfl_teams():
             "updated_at": t.updated_at
         }
         for t in teams
-    }
+    ]
     close_session(session)
-    return {"nfl_teams": result}
+    return result
+
 
 @app.get("/mlbteams")
 def get_mlb_teams():
     session = get_db_session()
     teams = session.query(MLBTeam).all()
-    result = {
-        t.id: {
+    result = [
+        {
+            "id": t.id,
             "name": t.name,
             "wins": t.wins,
             "losses": t.losses,
@@ -82,6 +88,6 @@ def get_mlb_teams():
             "updated_at": t.updated_at
         }
         for t in teams
-    }
+    ]
     close_session(session)
-    return {"mlb_teams": result}
+    return result
