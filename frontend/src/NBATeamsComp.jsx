@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import './index.css';
 
 function NBATeamsComp() {
-  const [nbaTeams, setNbaTeams] = useState([]);
+  const [nba_teams, setNbaTeams] = useState([]);
 
   useEffect(() => {
     fetch('http://127.0.0.1:8000/nbateams')  
@@ -24,6 +24,8 @@ function NBATeamsComp() {
             <thead>
               <tr>
                 <th>Team</th>
+                <th className = "sortable">CatElo</th>
+                <th className = "sortable">Name</th>
                 <th className="sortable">Wins</th>
                 <th className="sortable">Losses</th>
                 <th className="sortable">Win %</th>
@@ -33,8 +35,9 @@ function NBATeamsComp() {
               </tr>
             </thead>
             <tbody>
-              {nbaTeams.map(team => (
+              {nba_teams.map(team => (
                 <tr key={team.id}>
+                  <td>{team.catelo}</td>
                   <td>{team.name}</td>
                   <td>{team.wins}</td>
                   <td>{team.losses}</td>

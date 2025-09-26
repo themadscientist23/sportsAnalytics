@@ -1,61 +1,89 @@
-from balldontlie import BalldontlieAPI
-import mysql.connector
+import sys, os
 import time
 from datetime import datetime
 
-SEASON = 2024 
-ENDDATE = "2025-4-13"  
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-conn = mysql.connector.connect(
-    host="127.0.0.1",
-    port=3306,
-    user="root",
-    password="",
-    database="sportsdb"
-)
-cursor = conn.cursor()
+from database_config import get_db_session, close_session, create_tables, api
+from models import NBAGame, NBAGameDerived
 
-api = BalldontlieAPI(api_key="7c8468fa-393e-49cc-92c2-bf25160a6f8c")
+SEASON = 2024
+ENDDATE = "2025-04-13"
 api_cursor = None
 
+def populate_all_nba_games():
+    create_tables()
+    session = get_db_session()
+    skipped_count = 0
+    added_count = 0
 
-while True:
-    print("Fetching next page...")
-    time.sleep(60) 
-    games_page = api.nba.games.list(seasons=[SEASON], per_page=100, cursor=api_cursor, end_date=ENDDATE)
-    page_games = games_page.data
+    try:
+        while True:
+            print("Fetching next page...")
+            time.sleep(60)
+            games_page = api.nba.games.list(
+                seasons=[SEASON],
+                per_page=100,
+                cursor=api_cursor,
+                end_date=ENDDATE
+            )
+            page_games = games_page.data
+            if not page_games:
+                break
 
-    for g in page_games:
-        game_data = g.model_dump()
+            for g in page_games:
+                game_data = g.model_dump()
 
-        if game_data.get("status") != "Final" or game_data.get("postseason"):
-            continue
+                if game_data.get("status") != "Final" or game_data.get("postseason"):
+                    skipped_count += 1
+                    continue
 
-        game_id = game_data.get("id")
-        game_date = datetime.strptime(game_data.get("date"), "%Y-%m-%d").date()
-        home_team = game_data.get("home_team", {}).get("abbreviation")
-        away_team = game_data.get("visitor_team", {}).get("abbreviation")
-        home_score = game_data.get("home_team_score")
-        away_score = game_data.get("visitor_team_score")
+                game_id = game_data.get("id")
+                game_date = datetime.strptime(game_data.get("date"), "%Y-%m-%d").date()
+                home_team_abbr = game_data.get("home_team", {}).get("abbreviation")
+                away_team_abbr = game_data.get("visitor_team", {}).get("abbreviation")
+                home_score = game_data.get("home_team_score")
+                away_score = game_data.get("visitor_team_score")
 
-        sql = """
-            INSERT IGNORE INTO nba_games
-            (id, season, date, home_team, home_score, away_team, away_score)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """
-        values = (
-            game_id, SEASON, game_date, home_team,
-            home_score, away_team, away_score
-        )
-        cursor.execute(sql, values)
+                existing_game = session.query(NBAGame).filter(NBAGame.id == game_id).first()
+                if existing_game:
+                    continue
 
-    conn.commit()
+                new_game = NBAGame(
+                    id=game_id,
+                    season=SEASON,
+                    date=game_date,
+                    home_team_abbr=home_team_abbr,
+                    away_team_abbr=away_team_abbr,
+                    home_score=home_score,
+                    away_score=away_score
+                )
+                session.add(new_game)
 
-    api_cursor = games_page.meta.next_cursor
-    if not api_cursor:
-        break
+                derived_record = NBAGameDerived(
+                    game_id=game_id,
+                    processed=False
+                )
+                session.add(derived_record)
 
-cursor.close()
-conn.close()
-print("Finished updating NBA games.")
-print(f"Skipped {c} non-final games.")
+                added_count += 1
+
+            session.commit()
+            api_cursor = games_page.meta.next_cursor
+            if not api_cursor:
+                break
+
+        print(f"Finished populating NBA games for season {SEASON}.")
+        print(f"Total new games added: {added_count}")
+        print(f"Skipped {skipped_count} non-final or postseason games.")
+
+    except Exception as e:
+        session.rollback()
+        print(f"Error populating NBA games: {e}")
+        raise
+    finally:
+        close_session(session)
+
+
+if __name__ == "__main__":
+    populate_all_nba_games()

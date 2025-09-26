@@ -1,8 +1,0 @@
-Fetching next page...
-Traceback (most recent call last):
-  File "/Users/ciaranturner/code/sportsAnalytics/backend/nbaProvider/nbaDailyProvider.py", line 72, in <module>
-    added = update_nba_games_daily()
-  File "/Users/ciaranturner/code/sportsAnalytics/backend/nbaProvider/nbaDailyProvider.py", line 31, in update_nba_games_daily
-    cursor=api_cursor,
-           ^^^^^^^^^^
-UnboundLocalError: cannot access local variable 'api_cursor' where it is not associated with a value
