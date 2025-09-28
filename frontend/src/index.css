@@ -41,21 +41,22 @@ a {
 .default table {
   border-collapse: separate;
   border-spacing: 0;
-  width: 75%;
+  width: 80%;
   border: 3px solid white;
   border-radius: 12px;
   font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--text-color);
   overflow: hidden;
   margin: auto;
 }
 
 .default th {
+  box-sizing: border-box;
   background: var(--title-gradient);
   color: var(--text-color);
-  padding: 1em 1.5em;
-  text-align: left;
+  padding: 1em 2em 1em 1.5em;
+  text-align: center;
   border-bottom: 1px solid var(--text-color);
   font-weight: 700;
   position: relative;
@@ -63,22 +64,31 @@ a {
 }
 
 
+.default th.sortable {
+  position: relative; 
+}
+
 .default th.sortable::after {
-  content: '▲';
+  content: url(/arrow.png);              
   font-size: 0.85em;
   position: absolute;
   right: 0.5em;
-  transition: transform 0.3s ease;
-  transform-origin: center;
+  top: 50%;
+  transform: translateY(-50%); 
+  transition: transform 0.2s ease;
+  transform-origin: center;   
+  height: 12px;
+  width: 12px; 
 }
 
 .default th.sort-asc::after {
-  transform: rotate(0deg);
+  transform: translateY(-50%) rotate(0deg);
 }
 
 .default th.sort-desc::after {
-  transform: rotate(180deg);
+  transform: translateY(-50%) rotate(180deg);
 }
+
 
 .default td {
   background-color: #000000;
@@ -91,4 +101,16 @@ a {
 
 .default td:hover {
   background-color: rgba(255, 166, 0, 0.311);
+}
+
+.default td.catelo{
+  font-weight: 700;
+  color: #FFA600;
+}
+
+.default td.team_name img{
+  height: 25px;   
+  width: auto;
+  vertical-align: middle;
+  margin-right: 8px;
 }

@@ -4,7 +4,7 @@ function Nav() {
     return (
         <header>
             <nav className = "main-nav">
-                <a href="/" class ="logo">Logo </a>
+                <a href="/" className ="logo">Logo </a>
                 <div className = "nav-links">
                     <a href="/nba">NBA</a>
                     <a href="/nfl">NFL</a>

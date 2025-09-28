@@ -1,13 +1,11 @@
 from balldontlie import BalldontlieAPI
 from datetime import datetime
-from database_config import get_db_session, close_session
+from database_config import get_db_session, close_session, api
 from backend.models import NBAGame, NBAGameDerived
 
-API_KEY = "7c8468fa-393e-49cc-92c2-bf25160a6f8c"
 SEASON = 2024
 PATCH_DATE = "2024-12-01"
 
-api = BalldontlieAPI(api_key=API_KEY)#
 
 # Get database session
 session = get_db_session()
@@ -41,7 +39,7 @@ try:
 
         # Create new game
         new_game = NBAGame(
-            id=game_id,
+            gid=game_id,
             season=SEASON,
             date=game_date,
             home_team_abbr=home_team_abbr,

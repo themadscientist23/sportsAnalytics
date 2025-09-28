@@ -45,7 +45,7 @@ def populate_all_nba_games():
                     continue
 
                 new_game = NBAGame(
-                    id=game_id,
+                    gid=game_id,
                     season=SEASON,
                     date=game_date,
                     home_team_abbr=home_team_abbr,
