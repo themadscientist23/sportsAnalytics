@@ -108,9 +108,15 @@ a {
   color: #FFA600;
 }
 
+.default td.team_name{
+  background-color: hsla(29, 86%, 52%, 1);
+
+}
+
 .default td.team_name img{
   height: 25px;   
   width: auto;
   vertical-align: middle;
   margin-right: 8px;
 }
+

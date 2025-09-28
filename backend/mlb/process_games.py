@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
 from database_config import get_db_session, close_session
-from models import NBAGame, NBAGameDerived, NBATeam
+from models import MLBGame, MLBGameDerived, MLBTeam
 
 
 def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
@@ -13,25 +13,25 @@ def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
         home_team.catelo -= 15
 
 
-def process_nba_games():
+def process_MLB_games():
     session = get_db_session()
     try:
         unprocessed_rows = (
-            session.query(NBAGameDerived)
-            .options(joinedload(NBAGameDerived.game))
-            .filter(NBAGameDerived.processed == False)
-            .join(NBAGame)
-            .order_by(NBAGame.date)
+            session.query(MLBGameDerived)
+            .options(joinedload(MLBGameDerived.game))
+            .filter(MLBGameDerived.processed == False)
+            .join(MLBGame)
+            .order_by(MLBGame.date)
             .all()
         )
 
         if not unprocessed_rows:
-            print("No unprocessed NBA games found")
+            print("No unprocessed MLB games found")
             return
 
         print(f"Found {len(unprocessed_rows)} unprocessed games. Starting processing...")
 
-        teams_cache = {team.abbreviation: team for team in session.query(NBATeam).all()}
+        teams_cache = {team.abbreviation: team for team in session.query(MLBTeam).all()}
 
         for derived_row in unprocessed_rows:
             game = derived_row.game
@@ -76,7 +76,7 @@ def process_nba_games():
 
         print("Committing all changes to the database...")
         session.commit()
-        print(f"Successfully processed and saved {len(unprocessed_rows)} games.")
+        print(f"Successfully processed and saved {len(unprocessed_rows)} games. 🔥")
 
     except Exception as e:
         print(f"An error occurred during processing: {e}")
@@ -87,4 +87,4 @@ def process_nba_games():
 
 
 if __name__ == "__main__":
-    process_nba_games()
+    process_MLB_games()

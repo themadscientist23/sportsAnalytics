@@ -1,10 +1,17 @@
 # sportsAnalytics
 Work in progress
 Next Steps:
-- create nba_games_derived
-- new py script: migrate old nba_games data to new schema, creating a row in nba_games_derived
-- new py script: automate processing of games -> calculating starter derived data and updating team level data
-- refine catelo calculation
-- repeat for mlb and nfl with similar process
+- get cron in place
+- finish frontend
+   - make a real logo and render it on the nav bar
+   - get better arrow and only have it render when it is being sorted 
+  -  fix orange of catelo
+- figure out catelo calculations
+- create team pages with catelo graph
+- start with nfl
+  - fix endpoints
+  - scrape logos
+  - acquire data
+  - develop diferent catelo calculation 
+- same for mlb
 
-  *fix sortable arrows
