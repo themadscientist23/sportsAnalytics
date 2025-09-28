@@ -1,31 +1,30 @@
-import sys, os
 import time
-from datetime import datetime
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from database_config import get_db_session, close_session, create_tables, api
-from models import NBAGame, NBAGameDerived
+from datetime import datetime, timedelta
+from database_config import get_db_session, close_session, api
+from backend.models import NBAGame, NBAGameDerived
 
 SEASON = 2024
-ENDDATE = "2025-04-13"
 api_cursor = None
 
-def populate_all_nba_games():
-    create_tables()
+def update_nba_games_daily():    
+    global api_cursor
     session = get_db_session()
-    skipped_count = 0
-    added_count = 0
-
+    
     try:
+        today = datetime.today().date()
+        start_date = today - timedelta(days=2)
+        end_date = today
+        added_count = 0
+
         while True:
-            print("Fetching next page...")
+            print("Next page...")
             time.sleep(60)
             games_page = api.nba.games.list(
                 seasons=[SEASON],
                 per_page=100,
                 cursor=api_cursor,
-                end_date=ENDDATE
+                start_date=start_date.isoformat(),
+                end_date=end_date.isoformat()
             )
             page_games = games_page.data
             if not page_games:
@@ -33,9 +32,7 @@ def populate_all_nba_games():
 
             for g in page_games:
                 game_data = g.model_dump()
-
                 if game_data.get("status") != "Final" or game_data.get("postseason"):
-                    skipped_count += 1
                     continue
 
                 game_id = game_data.get("id")
@@ -59,13 +56,13 @@ def populate_all_nba_games():
                     away_score=away_score
                 )
                 session.add(new_game)
-
+                
                 derived_record = NBAGameDerived(
                     game_id=game_id,
                     processed=False
                 )
                 session.add(derived_record)
-
+                
                 added_count += 1
 
             session.commit()
@@ -73,17 +70,17 @@ def populate_all_nba_games():
             if not api_cursor:
                 break
 
-        print(f"Finished populating NBA games for season {SEASON}.")
+        print(f"Finished updating NBA games from {start_date} to {end_date}.")
         print(f"Total new games added: {added_count}")
-        print(f"Skipped {skipped_count} non-final or postseason games.")
-
+        return added_count
+        
     except Exception as e:
         session.rollback()
-        print(f"Error populating NBA games: {e}")
+        print(f"Error updating NBA games: {e}")
         raise
     finally:
         close_session(session)
 
-
 if __name__ == "__main__":
-    populate_all_nba_games()
+    added = update_nba_games_daily()
+    print(f"{datetime.now()}: Daily NBA update complete. {added} new games added.")

@@ -72,7 +72,7 @@ class NFLTeam(Base):
 class NBAGame(Base):
     __tablename__ = 'nba_games'
     
-    id = Column(Integer, primary_key=True)
+    gid = Column(Integer, primary_key=True, autoincrement=False)
     season = Column(Integer, nullable=False)
     date = Column(Date, nullable=False)
     
@@ -88,21 +88,51 @@ class NBAGame(Base):
     home_team = relationship("NBATeam", foreign_keys=[home_team_abbr])
     away_team = relationship("NBATeam", foreign_keys=[away_team_abbr])
 
+class NBAGameOld(Base):
+    __tablename__ = 'nba_games_old'
+    
+    id = Column(Integer, primary_key=True)
+    season = Column(Integer, nullable=False)
+    date = Column(Date, nullable=False)
+    
+    # Team references
+    home_team = Column(String(100))
+    away_team = Column(String(100))
+
+    # Scores
+    home_score = Column(Integer)
+    away_score = Column(Integer)
+    
+
 class NBAGameDerived(Base):
-    __tablename__ = 'nba_games_derived'
-    
-    game_id = Column(Integer, ForeignKey('nba_games.id'), primary_key=True)
-    
+    __tablename__ = "nba_games_derived"
+
+    game_gid = Column(
+        Integer,
+        ForeignKey("nba_games.gid", ondelete="CASCADE"),
+        primary_key=True,
+        nullable=False,
+        unique=True  
+    )
+
     # Processing status
     processed = Column(Boolean, default=False)
-    
+
     # Pre-game metrics
     home_pre_catelo = Column(Float)
     away_pre_catelo = Column(Float)
-    
+
     # Post-game metrics
     home_post_catelo = Column(Float)
     away_post_catelo = Column(Float)
+
+    # Relationship
+    game = relationship(
+        "NBAGame",
+        backref="derived_row",
+        passive_deletes=True,
+        uselist=False
+    )
 
 class MLBGame(Base):
     __tablename__ = 'mlb_games'

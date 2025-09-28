@@ -1,16 +1,13 @@
 from balldontlie import BalldontlieAPI
 from datetime import datetime
-from database_config import get_db_session, close_session, create_tables
-from models import NBAGame, NBAGameDerived
+from database_config import get_db_session, close_session
+from backend.models import NBAGame, NBAGameDerived
 
 API_KEY = "7c8468fa-393e-49cc-92c2-bf25160a6f8c"
 SEASON = 2024
 PATCH_DATE = "2024-12-01"
 
-api = BalldontlieAPI(api_key=API_KEY)
-
-# Create tables if they don't exist
-create_tables()
+api = BalldontlieAPI(api_key=API_KEY)#
 
 # Get database session
 session = get_db_session()
