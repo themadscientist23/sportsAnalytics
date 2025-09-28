@@ -1,6 +1,6 @@
 # sportsAnalytics
 Work in progress
-Next Steps:
+## Next Steps:
 - get cron in place
 - finish frontend
    - make a real logo and render it on the nav bar
