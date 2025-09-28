@@ -1,6 +1,0 @@
-Next page...
-{'data': [], 'meta': {'per_page': 100}}
-Finished updating NBA games from 2025-09-25 to 2025-09-27.
-Total new games added: 0
-2025-09-27 13:09:27.232402: Daily NBA update complete. 0 new games added.
-/opt/homebrew/Cellar/python@3.13/3.13.7/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python: can't open file '/Users/ciaranturner/code/sportsAnalytics/backend/nbaProvider/nbaDailyProvider.py': [Errno 2] No such file or directory
