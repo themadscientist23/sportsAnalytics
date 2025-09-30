@@ -8,10 +8,8 @@ def reset_nba_stats():
         session.query(NBATeam).update({
             NBATeam.wins: 0,
             NBATeam.losses: 0,
-            NBATeam.win_percentage: 0.0,
             NBATeam.points_for: 0.0,
             NBATeam.points_against: 0.0,
-            NBATeam.points_differential: 0.0,
             NBATeam.catelo: 1000.0
         }, synchronize_session=False)
         

@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# Signal script is running
+echo "Script started"
+
 # Activate virtual environment
 source /Users/ciaranturner/code/sportsAnalytics/backend/venv/bin/activate
 

@@ -17,10 +17,8 @@ class NBATeam(Base):
     losses = Column(Integer, default=0)
     
     # Calculated metrics
-    win_percentage = Column(Float, default=0.0)
     points_for = Column(Float, default=0.0)
     points_against = Column(Float, default=0.0)
-    points_differential = Column(Float, default=0.0)
     catelo = Column(Float, default=1000.0)
     
     # Metadata
@@ -38,10 +36,8 @@ class MLBTeam(Base):
     losses = Column(Integer, default=0)
     
     # Calculated metrics
-    win_percentage = Column(Float, default=0.0)
     points_for = Column(Float, default=0.0)
     points_against = Column(Float, default=0.0)
-    points_differential = Column(Float, default=0.0)
     catelo = Column(Float, default=1000.0)
     
     # Metadata
@@ -60,11 +56,10 @@ class NFLTeam(Base):
     ties = Column(Integer, default=0)
     
     # Calculated metrics
-    win_percentage = Column(Float, default=0.0)
     points_for = Column(Float, default=0.0)
     points_against = Column(Float, default=0.0)
-    points_differential = Column(Float, default=0.0)
     catelo = Column(Float, default=1000.0)
+    home_adv = Column(Float, default=100.0)
     
     # Metadata
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
@@ -88,21 +83,6 @@ class NBAGame(Base):
     home_team = relationship("NBATeam", foreign_keys=[home_team_abbr])
     away_team = relationship("NBATeam", foreign_keys=[away_team_abbr])
 
-class NBAGameOld(Base):
-    __tablename__ = 'nba_games_old'
-    
-    id = Column(Integer, primary_key=True)
-    season = Column(Integer, nullable=False)
-    date = Column(Date, nullable=False)
-    
-    # Team references
-    home_team = Column(String(100))
-    away_team = Column(String(100))
-
-    # Scores
-    home_score = Column(Integer)
-    away_score = Column(Integer)
-    
 
 class NBAGameDerived(Base):
     __tablename__ = "nba_games_derived"

@@ -8,10 +8,8 @@ def reset_MLB_stats():
         session.query(MLBTeam).update({
             MLBTeam.wins: 0,
             MLBTeam.losses: 0,
-            MLBTeam.win_percentage: 0.0,
             MLBTeam.points_for: 0.0,
             MLBTeam.points_against: 0.0,
-            MLBTeam.points_differential: 0.0,
             MLBTeam.catelo: 1000.0
         }, synchronize_session=False)
         

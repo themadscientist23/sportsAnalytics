@@ -33,10 +33,8 @@ def get_nba_teams():
             "name": t.name,
             "wins": t.wins,
             "losses": t.losses,
-            "win_percentage": t.win_percentage,
             "points_for": t.points_for,
             "points_against": t.points_against,
-            "points_differential": t.points_differential,
             "catelo": t.catelo,
             "updated_at": t.updated_at
         }
@@ -57,10 +55,8 @@ def get_nfl_teams():
             "wins": t.wins,
             "losses": t.losses,
             "ties": t.ties,
-            "win_percentage": t.win_percentage,
             "points_for": t.points_for,
             "points_against": t.points_against,
-            "points_differential": t.points_differential,
             "catelo": t.catelo,
             "updated_at": t.updated_at
         }
@@ -80,10 +76,8 @@ def get_mlb_teams():
             "name": t.name,
             "wins": t.wins,
             "losses": t.losses,
-            "win_percentage": t.win_percentage,
             "points_for": t.points_for,
             "points_against": t.points_against,
-            "points_differential": t.points_differential,
             "catelo": t.catelo,
             "updated_at": t.updated_at
         }

@@ -8,10 +8,8 @@ def reset_NFL_stats():
         session.query(NFLTeam).update({
             NFLTeam.wins: 0,
             NFLTeam.losses: 0,
-            NFLTeam.win_percentage: 0.0,
             NFLTeam.points_for: 0.0,
             NFLTeam.points_against: 0.0,
-            NFLTeam.points_differential: 0.0,
             NFLTeam.catelo: 1000.0
         }, synchronize_session=False)
         

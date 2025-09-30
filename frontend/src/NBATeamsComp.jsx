@@ -6,11 +6,21 @@ function NBATeamsComp() {
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/nbateams')  
+    fetch('http://127.0.0.1:8000/nbateams')
       .then(response => response.json())
       .then(data => {
-        sortBy('catelo', data); 
-        console.log("Fetched NBA teams:", data);
+        const modified = data.map(team => {
+          const games = team.wins + team.losses;
+          const win_percentage = (games > 0 ? (team.wins / games) * 100 : 0).toFixed(1);
+          const points_differential = (team.points_for - team.points_against) / games;
+          return {
+            ...team,
+            win_percentage,
+            points_differential,
+          };
+        });
+        sortBy('catelo', modified);
+        console.log("Fetched and modified NBA teams:", modified);
       })
       .catch(error => console.error('Houston: we have a problem:', error));
   }, []);
@@ -72,18 +82,28 @@ function NBATeamsComp() {
               </tr>
             </thead>
             <tbody>
-              {nba_teams.map(team => (
+              {nba_teams.map(team => {
+                const games = team.wins + team.losses;
+                const pointsPerGame = (team.points_for / games).toFixed(1);
+                const pointsAgainstPerGame = (team.points_against / games).toFixed(1);
+                const pointDiffPerGame = team.points_differential.toFixed(1);
+
+              return (
                 <tr key={team.id}>
-                  <td className = "team_name"><img src={`/logos/${team.name.replace(/ /g, '_')}.png`} alt={`${team.name} logo`} />{team.name}</td>
-                  <td className = "catelo">{team.catelo}</td>
+                  <td className="team_name">
+                    <img src={`/logos/${team.name.replace(/ /g, '_')}.png`} alt={`${team.name} logo`} />
+                    {team.name}
+                  </td>
+                  <td className="catelo">{team.catelo}</td>
                   <td>{team.wins}</td>
                   <td>{team.losses}</td>
                   <td>{team.win_percentage}</td>
-                  <td>{team.points_for}</td>
-                  <td>{team.points_against}</td>
-                  <td>{team.points_differential}</td>
+                  <td>{pointsPerGame}</td>
+                  <td>{pointsAgainstPerGame}</td>
+                  <td>{pointDiffPerGame}</td>
                 </tr>
-              ))}
+              );
+            })}
             </tbody>
           </table>
         </div>

@@ -69,26 +69,27 @@ a {
 }
 
 .default th.sortable::after {
-  content: url(/arrow.png);              
+  content: '';              
   font-size: 0.85em;
   position: absolute;
   right: 0.5em;
   top: 50%;
-  transform: translateY(-50%); 
-  transition: transform 0.2s ease;
   transform-origin: center;   
   height: 12px;
   width: 12px; 
 }
 
 .default th.sort-asc::after {
+  content: '▲';
   transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.2s ease;
 }
 
 .default th.sort-desc::after {
+  content: '▲';
   transform: translateY(-50%) rotate(180deg);
+  transition: transform 0.2s ease;
 }
-
 
 .default td {
   background-color: #000000;
@@ -119,4 +120,3 @@ a {
   vertical-align: middle;
   margin-right: 8px;
 }
-

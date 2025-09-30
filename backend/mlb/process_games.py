@@ -67,12 +67,6 @@ def process_MLB_games():
                 f"{home_team.abbreviation} ({game.home_score})"
             )
 
-        # Update team-level calculated stats
-        for team in teams_cache.values():
-            total_games = team.wins + team.losses
-            if total_games > 0:
-                team.win_percentage = round(team.wins / total_games, 3)
-            team.points_differential = team.points_for - team.points_against
 
         print("Committing all changes to the database...")
         session.commit()

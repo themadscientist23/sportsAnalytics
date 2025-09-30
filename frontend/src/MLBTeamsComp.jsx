@@ -41,7 +41,6 @@ function MlbTeamsComp() {
                   <td>{team.win_percentage}</td>
                   <td>{team.points_for}</td>
                   <td>{team.points_against}</td>
-                  <td>{team.points_differential}</td>
                 </tr>
               ))}
             </tbody>
