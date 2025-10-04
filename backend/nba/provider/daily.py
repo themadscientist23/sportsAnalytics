@@ -1,7 +1,7 @@
 import time
 from datetime import datetime, timedelta
 from database_config import get_db_session, close_session, api
-from backend.models import NBAGame, NBAGameDerived
+from models import NBAGame, NBAGameDerived
 
 SEASON = 2024
 api_cursor = None
@@ -9,9 +9,10 @@ api_cursor = None
 def update_nba_games_daily():    
     global api_cursor
     session = get_db_session()
-    
+
     try:
         today = datetime.today().date()
+        print(f"\n{today} UPDATE")
         start_date = today - timedelta(days=2)
         end_date = today
         added_count = 0
