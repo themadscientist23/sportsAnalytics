@@ -58,7 +58,8 @@ def get_nfl_teams():
             "points_for": t.points_for,
             "points_against": t.points_against,
             "catelo": t.catelo,
-            "updated_at": t.updated_at
+            "updated_at": t.updated_at,
+            "abbreviation": t.abbreviation
         }
         for t in teams
     ]
