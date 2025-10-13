@@ -3,8 +3,8 @@ Work in progress
 ## Next Steps:
 - create team pages with catelo graph
 - start with nfl
-  - fix endpoints
-  - scrape logos
+  - normalize logo naming schema
+    - make logos bigger for nfl
   - acquire data
   - develop diferent catelo calculation 
 - same for mlb
