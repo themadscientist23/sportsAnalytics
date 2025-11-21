@@ -1,7 +1,7 @@
 import time
 from datetime import datetime, timedelta
 from database_config import get_db_session, close_session, api
-from backend.models import NFLGame, NFLGameDerived
+from models import NFLGame, NFLGameDerived
 
 SEASON = 2025
 api_cursor = None
@@ -42,12 +42,12 @@ def update_nfl_games_daily():
                 home_score = game_data.get("home_team_score")
                 away_score = game_data.get("visitor_team_score")
 
-                existing_game = session.query(NFLGame).filter(NFLGame.gid == game_id).first()
+                existing_game = session.query(NFLGame).filter(NFLGame.id == game_id).first()
                 if existing_game:
                     continue
 
                 new_game = NFLGame(
-                    gid=game_id,
+                    id=game_id,
                     season=SEASON,
                     date=game_date,
                     home_team_abbr=home_team_abbr,

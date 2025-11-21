@@ -4,13 +4,58 @@ from models import NBAGame, NBAGameDerived, NBATeam
 
 
 def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
-    # Placeholder adjustments
+    """
+    Calculate CatElo rating changes based on Elo algorithm with margin of victory.
+    
+    Uses standard Elo formula:
+    - Expected win probability based on rating difference
+    - K-factor of 20 (standard for sports)
+    - Margin of victory multiplier (bigger wins = bigger changes)
+    - Home advantage of ~70 points (equivalent to ~3 points in NBA)
+    """
+    import math
+    
+    # Constants
+    K_FACTOR = 20  # Base K-factor
+    HOME_ADVANTAGE = 70  # Home team gets ~70 rating points advantage
+    
+    # Get pre-game ratings
+    home_rating = home_team.catelo
+    away_rating = away_team.catelo
+    
+    # Adjust for home advantage
+    adjusted_home_rating = home_rating + HOME_ADVANTAGE
+    
+    # Calculate expected win probability for home team
+    rating_diff = adjusted_home_rating - away_rating
+    expected_home_win = 1 / (1 + 10 ** (-rating_diff / 400))
+    
+    # Determine actual result (1 if home wins, 0 if away wins)
     if home_score > away_score:
-        home_team.catelo += 15
-        away_team.catelo -= 15
+        actual_result = 1
+        margin = home_score - away_score
+    elif away_score > home_score:
+        actual_result = 0
+        margin = away_score - home_score
     else:
-        away_team.catelo += 15
-        home_team.catelo -= 15
+        # Tie - both teams get small adjustment
+        actual_result = 0.5
+        margin = 0
+    
+    # Margin of victory multiplier (logarithmic scale)
+    # Bigger wins matter more, but with diminishing returns
+    if margin > 0:
+        mov_multiplier = math.log(max(margin, 1) + 1) / math.log(2)  # log2(margin + 1)
+        mov_multiplier = min(mov_multiplier, 2.0)  # Cap at 2x
+    else:
+        mov_multiplier = 1.0
+    
+    # Calculate rating change
+    rating_change = K_FACTOR * mov_multiplier * (actual_result - expected_home_win)
+    
+    # Apply changes
+    home_team.catelo += rating_change
+    away_team.catelo -= rating_change
 
 
 def process_nba_games():

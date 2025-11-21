@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 function NBATeamsComp() {
+  const navigate = useNavigate();
   const [nba_teams, setNbaTeams] = useState([]);
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
@@ -90,7 +92,7 @@ function NBATeamsComp() {
 
               return (
                 <tr key={team.id}>
-                  <td className="team_name">
+                  <td className="team_name clickable" onClick={() => navigate(`/nba/team/${team.abbreviation}`)}>
                     <img src={`/logos/${team.name.replace(/ /g, '_')}.png`} alt={`${team.name} logo`} />
                     {team.name}
                   </td>

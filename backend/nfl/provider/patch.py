@@ -1,7 +1,7 @@
 from balldontlie import BalldontlieAPI
 from datetime import datetime
 from database_config import get_db_session, close_session, api
-from backend.models import NFLGame, NFLGameDerived
+from models import NFLGame, NFLGameDerived
 
 SEASON = 2025
 PATCH_DATE = "2024-12-01"
@@ -11,11 +11,10 @@ PATCH_DATE = "2024-12-01"
 session = get_db_session()
 
 try:
-    games_page = api.NFL.games.list(
+    games_page = api.nfl.games.list(
         seasons=[SEASON],
         per_page=25,
-        start_date=PATCH_DATE,
-        end_date=PATCH_DATE
+        dates=[PATCH_DATE]
     )
 
     for g in games_page.data:
@@ -38,7 +37,7 @@ try:
 
         # Create new game
         new_game = NFLGame(
-            gid=game_id,
+            id=game_id,
             season=SEASON,
             date=game_date,
             home_team_abbr=home_team_abbr,

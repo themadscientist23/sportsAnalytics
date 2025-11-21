@@ -16,7 +16,7 @@ def populate_all_nfl_games():
         while True:
             print("Fetching next page...")
             time.sleep(60)
-            games_page = api.nba.games.list(
+            games_page = api.nfl.games.list(
                 seasons=[SEASON],
                 per_page=100,
                 cursor=api_cursor,
@@ -45,7 +45,7 @@ def populate_all_nfl_games():
                     continue
 
                 new_game = NFLGame(
-                    gid=game_id,
+                    id=game_id,
                     season=SEASON,
                     date=game_date,
                     home_team_abbr=home_team_abbr,
@@ -68,13 +68,13 @@ def populate_all_nfl_games():
             if not api_cursor:
                 break
 
-        print(f"Finished populating NBA games for season {SEASON}.")
+        print(f"Finished populating NFL games for season {SEASON}.")
         print(f"Total new games added: {added_count}")
         print(f"Skipped {skipped_count} non-final or postseason games.")
 
     except Exception as e:
         session.rollback()
-        print(f"Error populating NBA games: {e}")
+        print(f"Error populating NFL games: {e}")
         raise
     finally:
         close_session(session)

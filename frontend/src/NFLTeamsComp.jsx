@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 function NFLTeamsComp() {
+  const navigate = useNavigate();
   const [nfl_teams, setNflTeams] = useState([]);
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
@@ -67,7 +69,7 @@ function NFLTeamsComp() {
                 <th onClick={() => sortBy("losses")} className={`sortable ${sort_config.key === "losses" ? (sort_config.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
                         Losses 
                 </th>
-                <th onClick={() => sortBy("losses")} className={`sortable ${sort_config.key === "ties" ? (sort_config.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
+                <th onClick={() => sortBy("ties")} className={`sortable ${sort_config.key === "ties" ? (sort_config.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
                         Ties
                 </th>
                 <th onClick={() => sortBy("win_percentage")} className={`sortable ${sort_config.key === "win_percentage" ? (sort_config.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
@@ -93,7 +95,7 @@ function NFLTeamsComp() {
 
               return (
                 <tr key={team.id}>
-                  <td className="team_name">
+                  <td className="team_name clickable nfl-team-name" onClick={() => navigate(`/nfl/team/${team.abbreviation}`)}>
                     <img src={`/logos/${team.abbreviation}.svg`} alt={`${team.name} logo`} />
                     {team.name}
                   </td>

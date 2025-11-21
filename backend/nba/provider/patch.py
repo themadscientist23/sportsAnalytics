@@ -1,7 +1,7 @@
 from balldontlie import BalldontlieAPI
 from datetime import datetime
 from database_config import get_db_session, close_session, api
-from backend.models import NBAGame, NBAGameDerived
+from models import NBAGame, NBAGameDerived
 
 SEASON = 2024
 PATCH_DATE = "2024-12-01"
@@ -32,7 +32,7 @@ try:
         away_score = game.get("visitor_team_score")
 
         # Check if game already exists
-        existing_game = session.query(NBAGame).filter(NBAGame.id == game_id).first()
+        existing_game = session.query(NBAGame).filter(NBAGame.gid == game_id).first()
         if existing_game:
             print(f"Game {game_id} already exists, skipping...")
             continue
@@ -52,7 +52,7 @@ try:
         
         # Create derived record for processing
         derived_record = NBAGameDerived(
-            game_id=game_id,
+            game_gid=game_id,
             processed=False
         )
         session.add(derived_record)

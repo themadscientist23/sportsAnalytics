@@ -1,7 +1,7 @@
 import time
 from datetime import datetime, timedelta
 from database_config import get_db_session, close_session, api
-from backend.models import MLBGame, MLBGameDerived
+from models import MLBGame, MLBGameDerived
 
 SEASON = 2025
 api_cursor = None
@@ -19,7 +19,7 @@ def update_MLB_games_daily():
         while True:
             print("Next page...")
             time.sleep(60)
-            games_page = api.MLB.games.list(
+            games_page = api.mlb.games.list(
                 seasons=[SEASON],
                 per_page=100,
                 cursor=api_cursor,
@@ -42,12 +42,12 @@ def update_MLB_games_daily():
                 home_score = game_data.get("home_team_score")
                 away_score = game_data.get("visitor_team_score")
 
-                existing_game = session.query(MLBGame).filter(MLBGame.gid == game_id).first()
+                existing_game = session.query(MLBGame).filter(MLBGame.id == game_id).first()
                 if existing_game:
                     continue
 
                 new_game = MLBGame(
-                    gid=game_id,
+                    id=game_id,
                     season=SEASON,
                     date=game_date,
                     home_team_abbr=home_team_abbr,

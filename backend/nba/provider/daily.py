@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from database_config import get_db_session, close_session, api
 from models import NBAGame, NBAGameDerived
 
-SEASON = 2024
+SEASON = 2025
 api_cursor = None
 
 def update_nba_games_daily():    
@@ -59,7 +59,7 @@ def update_nba_games_daily():
                 session.add(new_game)
                 
                 derived_record = NBAGameDerived(
-                    game_id=game_id,
+                    game_gid=game_id,
                     processed=False
                 )
                 session.add(derived_record)
