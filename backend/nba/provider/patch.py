@@ -3,7 +3,7 @@ from datetime import datetime
 from database_config import get_db_session, close_session, api
 from models import NBAGame, NBAGameDerived
 
-SEASON = 2024
+SEASON = 2025
 PATCH_DATE = "2024-12-01"
 
 
