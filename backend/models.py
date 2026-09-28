@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import declarative_base, relationship
 from datetime import datetime, timezone
 
 Base = declarative_base()
@@ -69,7 +68,7 @@ class NBAGame(Base):
     
     gid = Column(Integer, primary_key=True, autoincrement=False)
     season = Column(Integer, nullable=False)
-    date = Column(Date, nullable=False)
+    date = Column(Date, nullable=False, index=True)
     
     # Team references
     home_team_abbr = Column(String(10), ForeignKey('nba_teams.abbreviation'), nullable=False)
@@ -119,7 +118,7 @@ class MLBGame(Base):
     
     id = Column(Integer, primary_key=True)
     season = Column(Integer, nullable=False)
-    date = Column(Date, nullable=False)
+    date = Column(Date, nullable=False, index=True)
     
     # Team references
     home_team_abbr = Column(String(10), ForeignKey('mlb_teams.abbreviation'), nullable=False)
@@ -136,7 +135,7 @@ class MLBGame(Base):
 class MLBGameDerived(Base):
     __tablename__ = 'mlb_games_derived'
     
-    game_id = Column(Integer, ForeignKey('mlb_games.id'), primary_key=True)
+    game_id = Column(Integer, ForeignKey('mlb_games.id', ondelete="CASCADE"), primary_key=True)
     
     # Processing status
     processed = Column(Boolean, default=False)
@@ -162,7 +161,7 @@ class NFLGame(Base):
     
     id = Column(Integer, primary_key=True)
     season = Column(Integer, nullable=False)
-    date = Column(Date, nullable=False)
+    date = Column(Date, nullable=False, index=True)
     
     # Team references
     home_team_abbr = Column(String(10), ForeignKey('nfl_teams.abbreviation'), nullable=False)
@@ -179,19 +178,24 @@ class NFLGame(Base):
 class NFLGameDerived(Base):
     __tablename__ = 'nfl_games_derived'
     
-    game_id = Column(Integer, ForeignKey('nfl_games.id'), primary_key=True)
-    
+    game_id = Column(Integer, ForeignKey('nfl_games.id', ondelete="CASCADE"), primary_key=True)
+
     # Processing status
     processed = Column(Boolean, default=False)
-    
+
     # Pre-game metrics
     home_pre_catelo = Column(Float)
     away_pre_catelo = Column(Float)
-    
+
     # Post-game metrics
     home_post_catelo = Column(Float)
     away_post_catelo = Column(Float)
 
     # Relationship
-    game = relationship("NFLGame", backref="derived_row", uselist=False)
+    game = relationship(
+        "NFLGame", 
+        backref="derived_row",
+        passive_deletes=True, 
+        uselist=False
+    )
 
