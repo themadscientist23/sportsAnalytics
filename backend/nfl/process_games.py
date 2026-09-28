@@ -92,9 +92,12 @@ def process_NFL_games():
             if game.home_score > game.away_score:
                 home_team.wins += 1
                 away_team.losses += 1
-            else:
+            elif game.away_score > game.home_score:
                 away_team.wins += 1
                 home_team.losses += 1
+            else:
+                home_team.ties += 1
+                away_team.ties += 1
 
             # Apply Cat-Elo update
             calculate_catelo(home_team, away_team, game.date, game.home_score, game.away_score)
