@@ -61,7 +61,7 @@ def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
     away_team.catelo -= rating_change
 
 
-def process_NFL_games():
+def process_nfl_games():
     session = get_db_session()
     try:
         unprocessed_rows = (
@@ -132,4 +132,4 @@ def process_NFL_games():
 
 
 if __name__ == "__main__":
-    process_NFL_games()
+    process_nfl_games()

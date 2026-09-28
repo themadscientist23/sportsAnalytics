@@ -1,7 +1,7 @@
 from database_config import get_db_session, close_session
 from models import MLBTeam, MLBGameDerived
 
-def reset_MLB_stats():
+def reset_mlb_stats():
     session = get_db_session()
     try:
         print("Resetting team stats...")
@@ -34,4 +34,4 @@ def reset_MLB_stats():
 
 
 if __name__ == "__main__":
-    reset_MLB_stats()
+    reset_mlb_stats()
