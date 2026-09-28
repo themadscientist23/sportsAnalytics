@@ -192,3 +192,6 @@ class NFLGameDerived(Base):
     home_post_catelo = Column(Float)
     away_post_catelo = Column(Float)
 
+    # Relationship
+    game = relationship("NFLGame", backref="derived_row", uselist=False)
+
