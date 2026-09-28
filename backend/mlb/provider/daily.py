@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from database_config import get_db_session, close_session, api
 from models import MLBGame, MLBGameDerived
 
-SEASON = 2025
+SEASON = 2026
 api_cursor = None
 
 def update_MLB_games_daily():    
