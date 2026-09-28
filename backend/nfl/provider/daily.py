@@ -14,6 +14,10 @@ def update_nfl_games_daily():
         today = datetime.today().date()
         start_date = today - timedelta(days=2)
         end_date = today
+        date_range = [
+            (start_date + timedelta(days=i)).isoformat()
+            for i in range((end_date - start_date).days + 1)
+        ]
         added_count = 0
 
         while True:
@@ -23,8 +27,7 @@ def update_nfl_games_daily():
                 seasons=[SEASON],
                 per_page=100,
                 cursor=api_cursor,
-                start_date=start_date.isoformat(),
-                end_date=end_date.isoformat()
+                dates=date_range
             )
             page_games = games_page.data
             if not page_games:
@@ -36,7 +39,7 @@ def update_nfl_games_daily():
                     continue
 
                 game_id = game_data.get("id")
-                game_date = datetime.strptime(game_data.get("date"), "%Y-%m-%d").date()
+                game_date = datetime.strptime(game_data.get("date")[:10], "%Y-%m-%d").date()
                 home_team_abbr = game_data.get("home_team", {}).get("abbreviation")
                 away_team_abbr = game_data.get("visitor_team", {}).get("abbreviation")
                 home_score = game_data.get("home_team_score")

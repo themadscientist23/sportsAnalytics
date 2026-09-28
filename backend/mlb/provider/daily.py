@@ -14,6 +14,10 @@ def update_MLB_games_daily():
         today = datetime.today().date()
         start_date = today - timedelta(days=2)
         end_date = today
+        date_range = [
+            (start_date + timedelta(days=i)).isoformat()
+            for i in range((end_date - start_date).days + 1)
+        ]
         added_count = 0
 
         while True:
@@ -23,8 +27,7 @@ def update_MLB_games_daily():
                 seasons=[SEASON],
                 per_page=100,
                 cursor=api_cursor,
-                start_date=start_date.isoformat(),
-                end_date=end_date.isoformat()
+                dates=date_range
             )
             page_games = games_page.data
             if not page_games:
@@ -32,15 +35,15 @@ def update_MLB_games_daily():
 
             for g in page_games:
                 game_data = g.model_dump()
-                if game_data.get("status") != "Final" or game_data.get("postseason"):
+                if game_data.get("status") != "STATUS_FINAL" or game_data.get("postseason"):
                     continue
 
                 game_id = game_data.get("id")
-                game_date = datetime.strptime(game_data.get("date"), "%Y-%m-%d").date()
+                game_date = datetime.strptime(game_data.get("date")[:10], "%Y-%m-%d").date()
                 home_team_abbr = game_data.get("home_team", {}).get("abbreviation")
-                away_team_abbr = game_data.get("visitor_team", {}).get("abbreviation")
-                home_score = game_data.get("home_team_score")
-                away_score = game_data.get("visitor_team_score")
+                away_team_abbr = game_data.get("away_team", {}).get("abbreviation")
+                home_score = game_data.get("home_team_data", {}).get("runs")
+                away_score = game_data.get("away_team_data", {}).get("runs")
 
                 existing_game = session.query(MLBGame).filter(MLBGame.id == game_id).first()
                 if existing_game:
