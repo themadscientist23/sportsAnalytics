@@ -92,7 +92,7 @@ function MlbTeamsComp() {
               return (
                 <tr key={team.id}>
                   <td className="team_name clickable" onClick={() => navigate(`/mlb/team/${team.abbreviation}`)}>
-                    <img src={`/logos/mlb/${team.abbreviation}.svg`} alt={`${team.name} logo`} />
+                    <img src={`/logos/mlb/${team.abbreviation}.png`} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
                   <td className="catelo">{team.catelo}</td>

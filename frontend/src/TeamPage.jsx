@@ -40,17 +40,7 @@ function TeamPage({ league }) {
     fullDate: game.date
   }));
 
-  // Each league keys its logo files differently (see frontend/public/logos/<league>/)
-  const LOGO_CONFIG = {
-    nba: { ext: 'png', filename: (t) => t.name.replace(/ /g, '_') },
-    nfl: { ext: 'svg', filename: (t) => t.abbreviation },
-    mlb: { ext: 'svg', filename: (t) => t.abbreviation },
-  };
-
-  const getLogoPath = () => {
-    const { ext, filename } = LOGO_CONFIG[league];
-    return `/logos/${league}/${filename(team)}.${ext}`;
-  };
+  const getLogoPath = () => `/logos/${league}/${team.abbreviation}.png`;
 
   return (
     <>
@@ -60,10 +50,10 @@ function TeamPage({ league }) {
           ← Back to {league.toUpperCase()} Teams
         </button>
         <div className="team-header">
-          <img 
-            src={getLogoPath()} 
-            alt={`${team.name} logo`} 
-            className={`team-logo ${league === 'nfl' ? 'nfl-logo-large' : ''}`}
+          <img
+            src={getLogoPath()}
+            alt={`${team.name} logo`}
+            className="team-logo"
           />
           <div>
             <h1>{team.name}</h1>
