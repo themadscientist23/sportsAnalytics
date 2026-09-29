@@ -2,9 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Nav from './Nav.jsx';
 import Homepage from './Homepage.jsx';
-import NbaTeamsComp from './NBATeamsComp.jsx';
-import NflTeamsComp from './NFLTeamsComp.jsx';
-import MlbTeamsComp from './MLBTeamsComp.jsx';
+import TeamsComp from './TeamsComp.jsx';
 import TeamPage from './TeamPage.jsx';
 import './index.css';
 
@@ -19,9 +17,9 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/nba" element={<NbaTeamsComp />} />
-        <Route path="/nfl" element={<NflTeamsComp />} />
-        <Route path="/mlb" element={<MlbTeamsComp />} />
+        <Route path="/nba" element={<TeamsComp league="nba" />} />
+        <Route path="/nfl" element={<TeamsComp league="nfl" />} />
+        <Route path="/mlb" element={<TeamsComp league="mlb" />} />
         <Route path="/nba/team/:abbreviation" element={<TeamPage league="nba" />} />
         <Route path="/nfl/team/:abbreviation" element={<TeamPage league="nfl" />} />
         <Route path="/mlb/team/:abbreviation" element={<TeamPage league="mlb" />} />
