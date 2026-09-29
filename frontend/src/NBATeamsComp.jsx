@@ -93,7 +93,7 @@ function NBATeamsComp() {
               return (
                 <tr key={team.id}>
                   <td className="team_name clickable" onClick={() => navigate(`/nba/team/${team.abbreviation}`)}>
-                    <img src={`/logos/nba/${team.name.replace(/ /g, '_')}.png`} alt={`${team.name} logo`} />
+                    <img src={`/logos/nba/${team.abbreviation}.svg`} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
                   <td className="catelo">{team.catelo}</td>
