@@ -30,3 +30,5 @@ Pull fresh data (all three sports):
 cd backend
 ./run_daily.zsh
 ```
+
+*Runs at http://localhost:5173*
