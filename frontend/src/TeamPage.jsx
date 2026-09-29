@@ -40,13 +40,16 @@ function TeamPage({ league }) {
     fullDate: game.date
   }));
 
-  // Determine logo path based on league
+  // Each league keys its logo files differently (see frontend/public/logos/<league>/)
+  const LOGO_CONFIG = {
+    nba: { ext: 'png', filename: (t) => t.name.replace(/ /g, '_') },
+    nfl: { ext: 'svg', filename: (t) => t.abbreviation },
+    mlb: { ext: 'svg', filename: (t) => t.abbreviation },
+  };
+
   const getLogoPath = () => {
-    if (league === 'nba') {
-      return `/logos/${team.name.replace(/ /g, '_')}.png`;
-    } else {
-      return `/logos/${team.abbreviation}.svg`;
-    }
+    const { ext, filename } = LOGO_CONFIG[league];
+    return `/logos/${league}/${filename(team)}.${ext}`;
   };
 
   return (

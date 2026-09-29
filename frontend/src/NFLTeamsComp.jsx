@@ -96,7 +96,7 @@ function NFLTeamsComp() {
               return (
                 <tr key={team.id}>
                   <td className="team_name clickable nfl-team-name" onClick={() => navigate(`/nfl/team/${team.abbreviation}`)}>
-                    <img src={`/logos/${team.abbreviation}.svg`} alt={`${team.name} logo`} />
+                    <img src={`/logos/nfl/${team.abbreviation}.svg`} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
                   <td className="catelo">{team.catelo}</td>
