@@ -66,7 +66,7 @@ class NFLTeam(Base):
 class NBAGame(Base):
     __tablename__ = 'nba_games'
     
-    gid = Column(Integer, primary_key=True, autoincrement=False)
+    id = Column(Integer, primary_key=True, autoincrement=False)
     season = Column(Integer, nullable=False)
     date = Column(Date, nullable=False, index=True)
     
@@ -86,12 +86,12 @@ class NBAGame(Base):
 class NBAGameDerived(Base):
     __tablename__ = "nba_games_derived"
 
-    game_gid = Column(
+    game_id = Column(
         Integer,
-        ForeignKey("nba_games.gid", ondelete="CASCADE"),
+        ForeignKey("nba_games.id", ondelete="CASCADE"),
         primary_key=True,
         nullable=False,
-        unique=True  
+        unique=True
     )
 
     # Processing status

@@ -40,12 +40,12 @@ def populate_all_nba_games():
                 home_score = game_data.get("home_team_score")
                 away_score = game_data.get("visitor_team_score")
 
-                existing_game = session.query(NBAGame).filter(NBAGame.gid == game_id).first()
+                existing_game = session.query(NBAGame).filter(NBAGame.id == game_id).first()
                 if existing_game:
                     continue
 
                 new_game = NBAGame(
-                    gid=game_id,
+                    id=game_id,
                     season=SEASON,
                     date=game_date,
                     home_team_abbr=home_team_abbr,
@@ -56,7 +56,7 @@ def populate_all_nba_games():
                 session.add(new_game)
 
                 derived_record = NBAGameDerived(
-                    game_gid=game_id,
+                    game_id=game_id,
                     processed=False
                 )
                 session.add(derived_record)

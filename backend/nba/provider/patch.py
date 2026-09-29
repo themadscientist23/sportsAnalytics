@@ -32,14 +32,14 @@ try:
         away_score = game.get("visitor_team_score")
 
         # Check if game already exists
-        existing_game = session.query(NBAGame).filter(NBAGame.gid == game_id).first()
+        existing_game = session.query(NBAGame).filter(NBAGame.id == game_id).first()
         if existing_game:
             print(f"Game {game_id} already exists, skipping...")
             continue
 
         # Create new game
         new_game = NBAGame(
-            gid=game_id,
+            id=game_id,
             season=SEASON,
             date=game_date,
             home_team_abbr=home_team_abbr,
@@ -52,7 +52,7 @@ try:
         
         # Create derived record for processing
         derived_record = NBAGameDerived(
-            game_gid=game_id,
+            game_id=game_id,
             processed=False
         )
         session.add(derived_record)

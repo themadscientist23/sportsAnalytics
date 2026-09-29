@@ -110,7 +110,7 @@ def get_nba_team_catelo_history(abbreviation: str):
         # Get all games where this team played (home or away)
         home_games = (
             session.query(NBAGameDerived, NBAGame)
-            .join(NBAGame, NBAGameDerived.game_gid == NBAGame.gid)
+            .join(NBAGame, NBAGameDerived.game_id == NBAGame.id)
             .filter(NBAGame.home_team_abbr == abbreviation)
             .filter(NBAGameDerived.processed == True)
             .order_by(NBAGame.date)
@@ -119,7 +119,7 @@ def get_nba_team_catelo_history(abbreviation: str):
         
         away_games = (
             session.query(NBAGameDerived, NBAGame)
-            .join(NBAGame, NBAGameDerived.game_gid == NBAGame.gid)
+            .join(NBAGame, NBAGameDerived.game_id == NBAGame.id)
             .filter(NBAGame.away_team_abbr == abbreviation)
             .filter(NBAGameDerived.processed == True)
             .order_by(NBAGame.date)
