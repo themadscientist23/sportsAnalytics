@@ -1,4 +1,4 @@
-# sportsAnalytics
+# Sports Analytics Platform
 
 Custom Elo ("CatElo") ratings for NBA, NFL, and MLB. FastAPI + MySQL backend, React frontend. Work in progress.
 
