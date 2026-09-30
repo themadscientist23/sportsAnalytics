@@ -1,30 +1,15 @@
 #!/bin/zsh
 
-# Signal script is running
 echo "Script started"
 
-# Activate virtual environment
 source /Users/ciaranturner/code/sportsAnalytics/backend/venv/bin/activate
-
-# Change to backend directory
 cd /Users/ciaranturner/code/sportsAnalytics/backend
 
-# Run NBA daily provider
-python -m daily nba >> daily_updater.log 2>&1
+LOG=scripts/daily_updater.log
 
-# Run NBA process_games
-python -m nba.process_games >> daily_updater.log 2>&1
-
-# Run NFL daily provider
-python -m daily nfl >> daily_updater.log 2>&1
-
-# Run NFL process_games
-python -m nfl.process_games >> daily_updater.log 2>&1
-
-# Run MLB daily provider
-python -m daily mlb >> daily_updater.log 2>&1
-
-# Run MLB process_games
-python -m mlb.process_games >> daily_updater.log 2>&1
+for sport in nba nfl mlb; do
+  python -m provider.daily $sport >> $LOG 2>&1
+  python -m sports.process_games $sport >> $LOG 2>&1
+done
 
 echo "Script finished"

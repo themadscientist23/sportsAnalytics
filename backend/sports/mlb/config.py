@@ -1,5 +1,6 @@
 from provider.api_client import api
 from sports.mlb.models import MLBGame, MLBGameRating, MLBTeam
+from sports.mlb.process_games import process_game
 
 
 def _extract(game):
@@ -23,6 +24,6 @@ MLB_CONFIG = {
     "games_api": lambda: api.mlb.games,
     "is_final": lambda g: g.get("status") == "STATUS_FINAL",
     "extract": _extract,
+    "process_game": process_game,
     "current_season": 2026,
-    "home_advantage": 50,
 }

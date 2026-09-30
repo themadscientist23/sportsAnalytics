@@ -1,5 +1,6 @@
 from provider.api_client import api
 from sports.nfl.models import NFLGame, NFLGameRating, NFLTeam
+from sports.nfl.process_games import process_game
 
 
 def _extract(game):
@@ -23,6 +24,6 @@ NFL_CONFIG = {
     "games_api": lambda: api.nfl.games,
     "is_final": lambda g: g.get("status") == "Final",
     "extract": _extract,
+    "process_game": process_game,
     "current_season": 2026,
-    "home_advantage": 50,
 }
