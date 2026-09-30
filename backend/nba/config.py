@@ -1,4 +1,4 @@
-from database_config import api
+from provider.api_client import api
 from nba.models import NBAGame, NBAGameRating, NBATeam
 
 

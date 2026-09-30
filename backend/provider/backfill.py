@@ -2,7 +2,7 @@ import argparse
 import time
 from datetime import datetime
 
-from database_config import close_session, get_db_session
+from db.session import close_session, get_db_session
 from sports_config import SPORTS
 
 
