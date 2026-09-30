@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
-from database_config import get_db_session, close_session
-from backend.sports.nba.models import NBAGame, NBAGameDerived, NBATeam
+from db.session import get_db_session, close_session
+from sports.nba.models import NBAGame, NBAGameDerived, NBATeam
 
 
 def calculate_catelo(home_team, away_team, game_date, home_score, away_score):

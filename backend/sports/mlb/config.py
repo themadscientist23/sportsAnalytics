@@ -7,8 +7,12 @@ def _extract(game):
     return {
         "home_team": {"id": home["id"], "name": home["display_name"], "abbreviation": home["abbreviation"]},
         "away_team": {"id": away["id"], "name": away["display_name"], "abbreviation": away["abbreviation"]},
-        "home_score": int(game["home_team_data"]["runs"]),
-        "away_score": int(game["away_team_data"]["runs"]),
+        "game": {
+            "home_team_id": home["id"],
+            "away_team_id": away["id"],
+            "home_score": int(game["home_team_data"]["runs"]),
+            "away_score": int(game["away_team_data"]["runs"]),
+        },
     }
 
 

@@ -54,10 +54,7 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                     season=season,
                     date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
                     postseason=bool(game_data.get("postseason")),
-                    home_team_id=fields["home_team"]["id"],
-                    away_team_id=fields["away_team"]["id"],
-                    home_score=fields["home_score"],
-                    away_score=fields["away_score"],
+                    **fields["game"],
                 ))
                 added_count += 1
 
