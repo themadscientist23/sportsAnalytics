@@ -1,7 +1,8 @@
 import argparse
 from datetime import datetime, timedelta
 
-from backfill import SPORTS, ingest_games
+from provider.backfill import ingest_games
+from sports_config import SPORTS
 
 
 def daily_update(sport, request_delay=60):

@@ -1,13 +1,10 @@
 import os
 
-from balldontlie import BalldontlieAPI
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
-
-api = BalldontlieAPI(api_key=os.environ["BALLDONTLIE_API_KEY"])
 
 DB_USER = os.getenv("DB_USER", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "")
