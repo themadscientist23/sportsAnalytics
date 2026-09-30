@@ -25,17 +25,12 @@ class TeamBase:
 
 
 class GameBase:
-    __autoincrement_id__ = False
-
+    id = Column(Integer, primary_key=True, autoincrement=False)
     season = Column(Integer, nullable=False)
     date = Column(Date, nullable=False, index=True)
 
     home_score = Column(Integer)
     away_score = Column(Integer)
-
-    @declared_attr
-    def id(cls):
-        return Column(Integer, primary_key=True, autoincrement=cls.__autoincrement_id__)
 
     @declared_attr
     def home_team_abbr(cls):
@@ -102,21 +97,18 @@ class NBAGame(GameBase, Base):
     __tablename__ = 'nba_games'
     __team_class__ = "NBATeam"
     __team_table__ = "nba_teams"
-    __autoincrement_id__ = False
 
 
 class MLBGame(GameBase, Base):
     __tablename__ = 'mlb_games'
     __team_class__ = "MLBTeam"
     __team_table__ = "mlb_teams"
-    __autoincrement_id__ = False
 
 
 class NFLGame(GameBase, Base):
     __tablename__ = 'nfl_games'
     __team_class__ = "NFLTeam"
     __team_table__ = "nfl_teams"
-    __autoincrement_id__ = False
 
 
 class NBAGameDerived(GameDerivedBase, Base):
