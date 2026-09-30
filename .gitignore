@@ -14,7 +14,6 @@
 # Python / Backend Specific
 **/__pycache__/
 backend/venv/
-backend/database_config.py
 
 
 # Node.js / Frontend Specific
