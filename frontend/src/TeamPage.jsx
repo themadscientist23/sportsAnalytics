@@ -10,8 +10,9 @@ function TeamPage({ league }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const apiUrl = `http://127.0.0.1:8000/${league}/team/${abbreviation}/catelo-history`;
-    fetch(apiUrl)
+    fetch(`http://127.0.0.1:8000/${league}/seasons`)
+      .then(response => response.json())
+      .then(seasons => fetch(`http://127.0.0.1:8000/${league}/seasons/${seasons[seasons.length - 1]}/teams/${abbreviation}`))
       .then(response => response.json())
       .then(data => {
         setTeamData(data);

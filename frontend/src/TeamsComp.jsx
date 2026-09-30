@@ -4,19 +4,21 @@ import './index.css';
 
 // Each league's teams table is identical apart from these bits.
 const LEAGUE_CONFIG = {
-  nba: { endpoint: 'nbateams', title: 'NBA Teams', hasTies: false },
-  nfl: { endpoint: 'nflteams', title: 'NFL Teams', hasTies: true },
-  mlb: { endpoint: 'mlbteams', title: 'MLB Teams', hasTies: false },
+  nba: { title: 'NBA Teams', hasTies: false },
+  nfl: { title: 'NFL Teams', hasTies: true },
+  mlb: { title: 'MLB Teams', hasTies: false },
 };
 
 function TeamsComp({ league }) {
-  const { endpoint, title, hasTies } = LEAGUE_CONFIG[league];
+  const { title, hasTies } = LEAGUE_CONFIG[league];
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/${endpoint}`)
+    fetch(`http://127.0.0.1:8000/${league}/seasons`)
+      .then(response => response.json())
+      .then(seasons => fetch(`http://127.0.0.1:8000/${league}/seasons/${seasons[seasons.length - 1]}/teams`))
       .then(response => response.json())
       .then(data => {
         const modified = data.map(team => {
