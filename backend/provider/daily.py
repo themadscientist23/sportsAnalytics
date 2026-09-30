@@ -1,7 +1,7 @@
 import argparse
 from datetime import datetime, timedelta
 
-from backfill import ingest_games
+from provider.backfill import ingest_games
 from sports_config import SPORTS
 
 
