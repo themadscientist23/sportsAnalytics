@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
 from database_config import get_db_session, close_session
-from models import NFLGame, NFLGameDerived, NFLTeam
+from backend.sports.nba.models import NBAGame, NBAGameDerived, NBATeam
 
 
 def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
@@ -11,29 +11,26 @@ def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
     - Expected win probability based on rating difference
     - K-factor of 20 (standard for sports)
     - Margin of victory multiplier (bigger wins = bigger changes)
-    - Uses team's home_adv field for dynamic home advantage
+    - Home advantage of ~70 points (equivalent to ~3 points in NBA)
     """
     import math
     
     # Constants
     K_FACTOR = 20  # Base K-factor
-    BASE_HOME_ADVANTAGE = 50  # Base home advantage
+    HOME_ADVANTAGE = 70  # Home team gets ~70 rating points advantage
     
     # Get pre-game ratings
     home_rating = home_team.catelo
     away_rating = away_team.catelo
     
-    # Use team's home_adv field if available, otherwise use base
-    home_advantage = getattr(home_team, 'home_adv', BASE_HOME_ADVANTAGE) or BASE_HOME_ADVANTAGE
-    
     # Adjust for home advantage
-    adjusted_home_rating = home_rating + home_advantage
+    adjusted_home_rating = home_rating + HOME_ADVANTAGE
     
     # Calculate expected win probability for home team
     rating_diff = adjusted_home_rating - away_rating
     expected_home_win = 1 / (1 + 10 ** (-rating_diff / 400))
     
-    # Determine actual result (1 if home wins, 0 if away wins, 0.5 for tie)
+    # Determine actual result (1 if home wins, 0 if away wins)
     if home_score > away_score:
         actual_result = 1
         margin = home_score - away_score
@@ -61,25 +58,25 @@ def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
     away_team.catelo -= rating_change
 
 
-def process_nfl_games():
+def process_nba_games():
     session = get_db_session()
     try:
         unprocessed_rows = (
-            session.query(NFLGameDerived)
-            .options(joinedload(NFLGameDerived.game))
-            .filter(NFLGameDerived.processed == False)
-            .join(NFLGame)
-            .order_by(NFLGame.date)
+            session.query(NBAGameDerived)
+            .options(joinedload(NBAGameDerived.game))
+            .filter(NBAGameDerived.processed == False)
+            .join(NBAGame)
+            .order_by(NBAGame.date)
             .all()
         )
 
         if not unprocessed_rows:
-            print("No unprocessed NFL games found")
+            print("No unprocessed NBA games found")
             return
 
         print(f"Found {len(unprocessed_rows)} unprocessed games. Starting processing...")
 
-        teams_cache = {team.abbreviation: team for team in session.query(NFLTeam).all()}
+        teams_cache = {team.abbreviation: team for team in session.query(NBATeam).all()}
 
         for derived_row in unprocessed_rows:
             game = derived_row.game
@@ -92,12 +89,9 @@ def process_nfl_games():
             if game.home_score > game.away_score:
                 home_team.wins += 1
                 away_team.losses += 1
-            elif game.away_score > game.home_score:
+            else:
                 away_team.wins += 1
                 home_team.losses += 1
-            else:
-                home_team.ties += 1
-                away_team.ties += 1
 
             # Apply Cat-Elo update
             calculate_catelo(home_team, away_team, game.date, game.home_score, game.away_score)
@@ -121,7 +115,7 @@ def process_nfl_games():
 
         print("Committing all changes to the database...")
         session.commit()
-        print(f"Successfully processed and saved {len(unprocessed_rows)} games. 🔥")
+        print(f"Successfully processed and saved {len(unprocessed_rows)} games.")
 
     except Exception as e:
         print(f"An error occurred during processing: {e}")
@@ -132,4 +126,4 @@ def process_nfl_games():
 
 
 if __name__ == "__main__":
-    process_nfl_games()
+    process_nba_games()

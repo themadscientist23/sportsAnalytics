@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 from db.session import close_session, get_db_session
-from sports_config import SPORTS
+from sports.config import SPORTS
 
 
 def _create_or_update_team(session, team_model, team_data):

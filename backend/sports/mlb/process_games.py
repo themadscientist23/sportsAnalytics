@@ -1,6 +1,6 @@
 from sqlalchemy.orm import joinedload
 from database_config import get_db_session, close_session
-from models import MLBGame, MLBGameDerived, MLBTeam
+from backend.sports.mlb.models import MLBGame, MLBGameDerived, MLBTeam
 
 
 def calculate_catelo(home_team, away_team, game_date, home_score, away_score):
