@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.teams import router as teams_router
+from app.api.teams import router as teams_router
 
 app = FastAPI(title="Sports Analytics API")
 

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 
-from db.session import close_session, get_db_session
-from db.stats import catelo_history, seasons, standings
-from sports.config import SPORTS
+from app.db.session import close_session, get_db_session
+from app.db.stats import catelo_history, seasons, standings
+from app.sports.config import SPORTS
 
 router = APIRouter()
 

@@ -1,7 +1,7 @@
 import argparse
 
-from db.session import close_session, get_db_session
-from sports.config import SPORTS
+from app.db.session import close_session, get_db_session
+from app.sports.config import SPORTS
 
 INITIAL_CATELO = 1000.0
 

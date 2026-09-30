@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Float
 
-from db.base import Base, GameBase, GameRatingBase, TeamBase
+from app.db.base import Base, GameBase, GameRatingBase, TeamBase
 
 
 class NFLTeam(TeamBase, Base):

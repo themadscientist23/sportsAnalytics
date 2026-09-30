@@ -1,6 +1,6 @@
-from provider.api_client import api
-from sports.mlb.models import MLBGame, MLBGameRating, MLBTeam
-from sports.mlb.process_games import process_game
+from app.provider.api_client import api
+from app.sports.mlb.models import MLBGame, MLBGameRating, MLBTeam
+from app.sports.mlb.process_games import process_game
 
 
 def _extract(game):
