@@ -35,6 +35,7 @@ SPORTS = {
         "derived_model": NBAGameDerived,
         "is_final": lambda g: g.get("status") == "Final",
         "extract": _nba_nfl_extract,
+        "current_season": 2025,
     },
     "nfl": {
         "games_api": lambda: api.nfl.games,
@@ -42,6 +43,7 @@ SPORTS = {
         "derived_model": NFLGameDerived,
         "is_final": lambda g: g.get("status") == "Final",
         "extract": _nba_nfl_extract,
+        "current_season": 2026,
     },
     "mlb": {
         "games_api": lambda: api.mlb.games,
@@ -49,11 +51,12 @@ SPORTS = {
         "derived_model": MLBGameDerived,
         "is_final": lambda g: g.get("status") == "STATUS_FINAL",
         "extract": _mlb_extract,
+        "current_season": 2026,
     },
 }
 
 
-def backfill(sport, season, request_delay=60):
+def ingest_games(sport, season, dates=None, request_delay=60):
     config = SPORTS[sport]
     games_api = config["games_api"]()
     game_model = config["game_model"]
@@ -67,7 +70,7 @@ def backfill(sport, season, request_delay=60):
     try:
         while True:
             print(f"[{sport}:{season}] Fetching next page...")
-            games_page = games_api.list(seasons=[season], per_page=100, cursor=cursor)
+            games_page = games_api.list(seasons=[season], per_page=100, cursor=cursor, dates=dates)
             page_games = games_page.data
             if not page_games:
                 break
@@ -101,10 +104,14 @@ def backfill(sport, season, request_delay=60):
 
     except Exception as e:
         session.rollback()
-        print(f"[{sport}:{season}] Error during backfill: {e}")
+        print(f"[{sport}:{season}] Error: {e}")
         raise
     finally:
         close_session(session)
+
+
+def backfill(sport, season, request_delay=60):
+    return ingest_games(sport, season, request_delay=request_delay)
 
 
 if __name__ == "__main__":
