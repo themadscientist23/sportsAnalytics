@@ -1,4 +1,5 @@
 import { logoUrl } from '../lib/leagues.js';
+import { formatCatelo } from '../lib/format.js';
 import './TeamHeader.css';
 
 function TeamHeader({ league, team }) {
@@ -14,7 +15,7 @@ function TeamHeader({ league, team }) {
         <div className="team-stats-summary">
           <div className="stat-item">
             <span className="stat-label">Current CatElo</span>
-            <span className="stat-value">{Math.round(team.current_catelo)}</span>
+            <span className="stat-value">{formatCatelo(team.current_catelo)}</span>
           </div>
         </div>
       </div>

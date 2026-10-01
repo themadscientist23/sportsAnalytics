@@ -1,3 +1,4 @@
+import { formatCatelo } from '../lib/format.js';
 import './RecentGames.css';
 
 function RecentGames({ history }) {
@@ -18,7 +19,7 @@ function RecentGames({ history }) {
               {game.home ? 'vs' : '@'} {game.opponent}
             </span>
             <span className="game-score">{game.score}</span>
-            <span className="game-catelo">{Math.round(game.catelo)}</span>
+            <span className="game-catelo">{formatCatelo(game.catelo)}</span>
           </div>
         ))}
       </div>

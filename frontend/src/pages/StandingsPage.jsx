@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../lib/api.js';
 import { LEAGUES, logoUrl } from '../lib/leagues.js';
+import { formatCatelo } from '../lib/format.js';
 import './StandingsPage.css';
 
 const withStats = (team, hasTies) => {
@@ -76,7 +77,7 @@ function StandingsPage({ league }) {
                     <img src={logoUrl(league, team.abbreviation)} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
-                  <td className="catelo">{team.catelo}</td>
+                  <td className="catelo">{formatCatelo(team.catelo)}</td>
                   <td>{team.wins}</td>
                   <td>{team.losses}</td>
                   {hasTies && <td>{team.ties}</td>}
