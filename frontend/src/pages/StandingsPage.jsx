@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../api.js';
-
-// Each league's teams table is identical apart from these bits.
-const LEAGUE_CONFIG = {
-  nba: { title: 'NBA Teams', hasTies: false },
-  nfl: { title: 'NFL Teams', hasTies: true },
-  mlb: { title: 'MLB Teams', hasTies: false },
-};
+import { LEAGUES, logoUrl } from '../leagues.js';
 
 function StandingsPage({ league }) {
-  const { title, hasTies } = LEAGUE_CONFIG[league];
+  const { title, hasTies } = LEAGUES[league];
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
@@ -94,7 +88,7 @@ function StandingsPage({ league }) {
               return (
                 <tr key={team.id}>
                   <td className="team_name clickable" onClick={() => navigate(`/${league}/team/${team.abbreviation}`)}>
-                    <img src={`/logos/${league}/${team.abbreviation}.png`} alt={`${team.name} logo`} />
+                    <img src={logoUrl(league, team.abbreviation)} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
                   <td className="catelo">{team.catelo}</td>

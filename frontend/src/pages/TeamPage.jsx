@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { API_URL } from '../api.js';
+import { LEAGUES, logoUrl } from '../leagues.js';
 
 function TeamPage({ league }) {
   const { abbreviation } = useParams();
@@ -41,17 +42,15 @@ function TeamPage({ league }) {
     fullDate: game.date
   }));
 
-  const getLogoPath = () => `/logos/${league}/${team.abbreviation}.png`;
-
   return (
     <>
       <div className="team-page">
         <button onClick={() => navigate(`/${league}`)} className="back-button">
-          ← Back to {league.toUpperCase()} Teams
+          ← Back to {LEAGUES[league].title}
         </button>
         <div className="team-header">
           <img
-            src={getLogoPath()}
+            src={logoUrl(league, team.abbreviation)}
             alt={`${team.name} logo`}
             className="team-logo"
           />
