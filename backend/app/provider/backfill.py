@@ -49,13 +49,15 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                     _create_or_update_team(session, team_model, fields["home_team"])
                     _create_or_update_team(session, team_model, fields["away_team"])
 
-                    session.add(game_model(
-                        id=game_id,
-                        season=season,
-                        date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
-                        postseason=bool(game_data.get("postseason")),
-                        **fields["game"],
-                    ))
+                    session.add(
+                        game_model(
+                            id=game_id,
+                            season=season,
+                            date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
+                            postseason=bool(game_data.get("postseason")),
+                            **fields["game"],
+                        )
+                    )
                     added_count += 1
 
                 session.commit()

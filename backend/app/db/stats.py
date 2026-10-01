@@ -79,11 +79,13 @@ def catelo_history(session, config, team_id, season):
     history = []
     for game, rating in rows:
         is_home = game.home_team_id == team_id
-        history.append({
-            "date": game.date.isoformat(),
-            "catelo": rating.home_post_catelo if is_home else rating.away_post_catelo,
-            "opponent": abbreviations[game.away_team_id if is_home else game.home_team_id],
-            "home": is_home,
-            "score": f"{game.home_score}-{game.away_score}" if is_home else f"{game.away_score}-{game.home_score}",
-        })
+        history.append(
+            {
+                "date": game.date.isoformat(),
+                "catelo": rating.home_post_catelo if is_home else rating.away_post_catelo,
+                "opponent": abbreviations[game.away_team_id if is_home else game.home_team_id],
+                "home": is_home,
+                "score": f"{game.home_score}-{game.away_score}" if is_home else f"{game.away_score}-{game.home_score}",
+            }
+        )
     return history
