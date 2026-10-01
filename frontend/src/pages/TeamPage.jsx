@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { API_URL } from './api.js';
+import { API_URL } from '../api.js';
 
 function TeamPage({ league }) {
   const { abbreviation } = useParams();

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from './api.js';
+import { API_URL } from '../api.js';
 
 // Each league's teams table is identical apart from these bits.
 const LEAGUE_CONFIG = {
@@ -9,7 +9,7 @@ const LEAGUE_CONFIG = {
   mlb: { title: 'MLB Teams', hasTies: false },
 };
 
-function TeamsComp({ league }) {
+function StandingsPage({ league }) {
   const { title, hasTies } = LEAGUE_CONFIG[league];
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
@@ -116,4 +116,4 @@ function TeamsComp({ league }) {
   );
 }
 
-export default TeamsComp;
+export default StandingsPage;

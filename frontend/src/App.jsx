@@ -1,12 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Nav from './Nav.jsx';
-import Homepage from './Homepage.jsx';
-import TeamsComp from './TeamsComp.jsx';
-import TeamPage from './TeamPage.jsx';
-
-function NotFound() {
-  return <h1>Error 404</h1>;
-}
+import Nav from './components/Nav.jsx';
+import Homepage from './pages/Homepage.jsx';
+import StandingsPage from './pages/StandingsPage.jsx';
+import TeamPage from './pages/TeamPage.jsx';
+import NotFound from './pages/NotFound.jsx';
 
 function App() {
 
@@ -15,9 +12,9 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/nba" element={<TeamsComp league="nba" />} />
-        <Route path="/nfl" element={<TeamsComp league="nfl" />} />
-        <Route path="/mlb" element={<TeamsComp league="mlb" />} />
+        <Route path="/nba" element={<StandingsPage league="nba" />} />
+        <Route path="/nfl" element={<StandingsPage league="nfl" />} />
+        <Route path="/mlb" element={<StandingsPage league="mlb" />} />
         <Route path="/nba/team/:abbreviation" element={<TeamPage league="nba" />} />
         <Route path="/nfl/team/:abbreviation" element={<TeamPage league="nfl" />} />
         <Route path="/mlb/team/:abbreviation" element={<TeamPage league="mlb" />} />
