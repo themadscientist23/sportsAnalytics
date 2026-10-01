@@ -16,6 +16,28 @@ function TeamsComp({ league }) {
   const [teams, setTeams] = useState([]);
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
+  const sortBy = (key, teams_to_sort = teams) => {
+    let direction;
+
+    if (sort_config.key === key && sort_config.direction === 'ascending') {
+      direction = 'descending';
+    } else if (sort_config.key === key && sort_config.direction === 'descending') {
+      direction = 'ascending';
+    } else {
+      direction = 'descending';
+    }
+
+    setSortConfig({ key, direction });
+    const sortedTeams = [...teams_to_sort].sort((a, b) => {
+      if (direction === 'ascending') {
+        return a[key] > b[key] ? 1 : -1;
+      } else {
+        return a[key] < b[key] ? 1 : -1;
+      }
+    });
+    setTeams(sortedTeams);
+  }
+
   useEffect(() => {
     fetch(`${API_URL}/${league}/seasons`)
       .then(response => response.json())
@@ -38,28 +60,6 @@ function TeamsComp({ league }) {
       .catch(error => console.error('Houston: we have a problem:', error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [league]);
-
-  const sortBy = (key, teams_to_sort = teams) => {
-    let direction;
-
-    if (sort_config.key === key && sort_config.direction === 'ascending') {
-      direction = 'descending';
-    } else if (sort_config.key === key && sort_config.direction === 'descending') {
-      direction = 'ascending';
-    } else {
-      direction = 'descending';
-    }
-
-    setSortConfig({ key, direction });
-    const sortedTeams = [...teams_to_sort].sort((a, b) => {
-      if (direction === 'ascending') {
-        return a[key] > b[key] ? 1 : -1;
-      } else {
-        return a[key] < b[key] ? 1 : -1;
-      }
-    });
-    setTeams(sortedTeams);
-  }
 
   const sortableHeader = (key, label) => (
     <th onClick={() => sortBy(key)} className={`sortable ${sort_config.key === key ? (sort_config.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
