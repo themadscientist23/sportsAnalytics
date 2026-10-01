@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.db.session import close_session, get_db_session
+from app.api.deps import get_db
 from app.db.stats import catelo_history, seasons, standings
 from app.sports.config import SPORTS
 
@@ -8,41 +9,29 @@ router = APIRouter()
 
 
 @router.get("/{sport}/seasons")
-def get_seasons(sport: str):
+def get_seasons(sport: str, db: Session = Depends(get_db)):
     config = SPORTS[sport]
-    session = get_db_session()
-    try:
-        return seasons(session, config)
-    finally:
-        close_session(session)
+    return seasons(db, config)
 
 
 @router.get("/{sport}/seasons/{season}/teams")
-def get_teams(sport: str, season: int):
+def get_teams(sport: str, season: int, db: Session = Depends(get_db)):
     config = SPORTS[sport]
-    session = get_db_session()
-    try:
-        return standings(session, config, season)
-    finally:
-        close_session(session)
+    return standings(db, config, season)
 
 
 @router.get("/{sport}/seasons/{season}/teams/{abbreviation}")
-def get_team(sport: str, season: int, abbreviation: str):
+def get_team(sport: str, season: int, abbreviation: str, db: Session = Depends(get_db)):
     config = SPORTS[sport]
     team_model = config["team_model"]
-    session = get_db_session()
-    try:
-        team = session.query(team_model).filter(team_model.abbreviation == abbreviation).one()
-        history = catelo_history(session, config, team.id, season)
-        return {
-            "team": {
-                "id": team.id,
-                "name": team.name,
-                "abbreviation": team.abbreviation,
-                "current_catelo": history[-1]["catelo"] if history else None,
-            },
-            "history": history,
-        }
-    finally:
-        close_session(session)
+    team = db.query(team_model).filter(team_model.abbreviation == abbreviation).one()
+    history = catelo_history(db, config, team.id, season)
+    return {
+        "team": {
+            "id": team.id,
+            "name": team.name,
+            "abbreviation": team.abbreviation,
+            "current_catelo": history[-1]["catelo"] if history else None,
+        },
+        "history": history,
+    }
