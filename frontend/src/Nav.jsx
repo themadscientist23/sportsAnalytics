@@ -6,7 +6,7 @@ function Nav() {
         <header>
             <nav className="main-nav">
                 <Link to="/" className="logo">
-                    <img src="/simplelogo.png" alt="Logo" className="h-10 w-auto" />
+                    <img src="/simplelogo.png" alt="Logo" />
                 </Link>
                 <div className="nav-links">
                     <Link to="/nba">NBA</Link>

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { API_URL } from './api.js';
-import './index.css';
 
 function TeamPage({ league }) {
   const { abbreviation } = useParams();
@@ -46,7 +45,6 @@ function TeamPage({ league }) {
 
   return (
     <>
-      <nav />
       <div className="team-page">
         <button onClick={() => navigate(`/${league}`)} className="back-button">
           ← Back to {league.toUpperCase()} Teams

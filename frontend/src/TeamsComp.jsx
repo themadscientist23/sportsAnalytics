@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from './api.js';
-import './index.css';
 
 // Each league's teams table is identical apart from these bits.
 const LEAGUE_CONFIG = {
@@ -55,7 +54,6 @@ function TeamsComp({ league }) {
           };
         });
         sortBy('catelo', modified);
-        console.log(`Fetched and modified ${league.toUpperCase()} teams:`, modified);
       })
       .catch(error => console.error('Houston: we have a problem:', error));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +67,6 @@ function TeamsComp({ league }) {
 
   return (
     <>
-      <nav />
       <h1>{title}</h1>
       <div className = "default ">
         <div className = "table-wrapper">

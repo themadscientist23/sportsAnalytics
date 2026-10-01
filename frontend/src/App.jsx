@@ -3,7 +3,6 @@ import Nav from './Nav.jsx';
 import Homepage from './Homepage.jsx';
 import TeamsComp from './TeamsComp.jsx';
 import TeamPage from './TeamPage.jsx';
-import './index.css';
 
 function NotFound() {
   return <h1>Error 404 - Airball</h1>;
