@@ -2,7 +2,7 @@ import argparse
 import time
 from datetime import datetime
 
-from app.db.session import close_session, get_db_session
+from app.db.session import SessionLocal
 from app.sports.config import SPORTS
 
 
@@ -21,58 +21,56 @@ def ingest_games(sport, season, dates=None, request_delay=60):
     team_model = config["team_model"]
     game_model = config["game_model"]
 
-    session = get_db_session()
     added_count = 0
     skipped_count = 0
     cursor = None
 
-    try:
-        while True:
-            print(f"[{sport}:{season}] Fetching next page...")
-            games_page = games_api.list(seasons=[season], per_page=100, cursor=cursor, dates=dates)
-            page_games = games_page.data
-            if not page_games:
-                break
+    with SessionLocal() as session:
+        try:
+            while True:
+                print(f"[{sport}:{season}] Fetching next page...")
+                games_page = games_api.list(seasons=[season], per_page=100, cursor=cursor, dates=dates)
+                page_games = games_page.data
+                if not page_games:
+                    break
 
-            for g in page_games:
-                game_data = g.model_dump()
+                for g in page_games:
+                    game_data = g.model_dump()
 
-                if not config["is_final"](game_data):
-                    skipped_count += 1
-                    continue
+                    if not config["is_final"](game_data):
+                        skipped_count += 1
+                        continue
 
-                game_id = game_data["id"]
-                if session.get(game_model, game_id):
-                    continue
+                    game_id = game_data["id"]
+                    if session.get(game_model, game_id):
+                        continue
 
-                fields = config["extract"](game_data)
-                _create_or_update_team(session, team_model, fields["home_team"])
-                _create_or_update_team(session, team_model, fields["away_team"])
+                    fields = config["extract"](game_data)
+                    _create_or_update_team(session, team_model, fields["home_team"])
+                    _create_or_update_team(session, team_model, fields["away_team"])
 
-                session.add(game_model(
-                    id=game_id,
-                    season=season,
-                    date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
-                    postseason=bool(game_data.get("postseason")),
-                    **fields["game"],
-                ))
-                added_count += 1
+                    session.add(game_model(
+                        id=game_id,
+                        season=season,
+                        date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
+                        postseason=bool(game_data.get("postseason")),
+                        **fields["game"],
+                    ))
+                    added_count += 1
 
-            session.commit()
-            cursor = games_page.meta.next_cursor
-            if not cursor:
-                break
-            time.sleep(request_delay)
+                session.commit()
+                cursor = games_page.meta.next_cursor
+                if not cursor:
+                    break
+                time.sleep(request_delay)
 
-        print(f"[{sport}:{season}] Done. Added {added_count} games, skipped {skipped_count} non-final.")
-        return added_count
+            print(f"[{sport}:{season}] Done. Added {added_count} games, skipped {skipped_count} non-final.")
+            return added_count
 
-    except Exception as e:
-        session.rollback()
-        print(f"[{sport}:{season}] Error: {e}")
-        raise
-    finally:
-        close_session(session)
+        except Exception as e:
+            session.rollback()
+            print(f"[{sport}:{season}] Error: {e}")
+            raise
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import argparse
 
-from app.db.session import close_session, get_db_session
+from app.db.session import SessionLocal
 from app.sports.config import SPORTS
 
 INITIAL_CATELO = 1000.0
@@ -50,14 +50,11 @@ def _process_season(session, config, season):
 
 def process_games(sport):
     config = SPORTS[sport]
-    session = get_db_session()
-    try:
+    with SessionLocal() as session:
         for season in _seasons_with_unrated_games(session, config["game_model"], config["rating_model"]):
             count = _process_season(session, config, season)
             print(f"[{sport}:{season}] Rated {count} games.")
         session.commit()
-    finally:
-        close_session(session)
 
 
 if __name__ == "__main__":
