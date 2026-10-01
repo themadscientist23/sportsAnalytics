@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { API_URL } from '../api.js';
-import { LEAGUES, logoUrl } from '../leagues.js';
+import { LEAGUES } from '../leagues.js';
+import TeamHeader from '../components/TeamHeader.jsx';
+import CatEloChart from '../components/CatEloChart.jsx';
+import RecentGames from '../components/RecentGames.jsx';
 
 function TeamPage({ league }) {
   const { abbreviation } = useParams();
@@ -35,105 +37,22 @@ function TeamPage({ league }) {
 
   const { team, history } = teamData;
 
-  // Prepare chart data
-  const chartData = history.map((game) => ({
-    date: new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    catelo: Math.round(game.catelo),
-    fullDate: game.date
-  }));
-
   return (
-    <>
-      <div className="team-page">
-        <button onClick={() => navigate(`/${league}`)} className="back-button">
-          ← Back to {LEAGUES[league].title}
-        </button>
-        <div className="team-header">
-          <img
-            src={logoUrl(league, team.abbreviation)}
-            alt={`${team.name} logo`}
-            className="team-logo"
-          />
-          <div>
-            <h1>{team.name}</h1>
-            <div className="team-stats-summary">
-              <div className="stat-item">
-                <span className="stat-label">Current CatElo</span>
-                <span className="stat-value">{Math.round(team.current_catelo)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {history.length > 0 ? (
-          <div className="chart-container">
-            <h2>CatElo Rating Over Time</h2>
-            <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis 
-                  dataKey="date" 
-                  stroke="#fff"
-                  tick={{ fill: '#fff' }}
-                  angle={-45}
-                  textAnchor="end"
-                  height={80}
-                />
-                <YAxis 
-                  stroke="#fff"
-                  tick={{ fill: '#fff' }}
-                  domain={['dataMin - 50', 'dataMax + 50']}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#1a1a1a', 
-                    border: '1px solid #fff',
-                    color: '#fff'
-                  }}
-                  labelStyle={{ color: '#FFA600' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="catelo" 
-                  stroke="#FFA600" 
-                  strokeWidth={2}
-                  dot={{ fill: '#FFA600', r: 3 }}
-                  activeDot={{ r: 5 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        ) : (
-          <div className="no-data">No game history available</div>
-        )}
-
-        {history.length > 0 && (
-          <div className="game-history">
-            <h2>Recent Games</h2>
-            <div className="game-list">
-              {history.slice(-10).reverse().map((game, index) => (
-                <div key={index} className="game-item">
-                  <span className="game-date">
-                    {new Date(game.date).toLocaleDateString('en-US', { 
-                      month: 'short', 
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
-                  </span>
-                  <span className="game-opponent">
-                    {game.home ? 'vs' : '@'} {game.opponent}
-                  </span>
-                  <span className="game-score">{game.score}</span>
-                  <span className="game-catelo">{Math.round(game.catelo)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+    <div className="team-page">
+      <button onClick={() => navigate(`/${league}`)} className="back-button">
+        ← Back to {LEAGUES[league].title}
+      </button>
+      <TeamHeader league={league} team={team} />
+      {history.length > 0 ? (
+        <>
+          <CatEloChart history={history} />
+          <RecentGames history={history} />
+        </>
+      ) : (
+        <div className="no-data">No game history available</div>
+      )}
+    </div>
   );
 }
 
 export default TeamPage;
-
