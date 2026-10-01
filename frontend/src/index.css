@@ -109,7 +109,7 @@ a {
   color: #FFA600;
 }
 
-.default td.team_name{
+.default td.team-name{
   background-color: #000000;
   display: flex;
   align-items: center;
@@ -117,7 +117,7 @@ a {
   text-align: left;
 }
 
-.default td.team_name img{
+.default td.team-name img{
   height: 32px;
   width: auto;
   margin-right: 8px;
@@ -127,12 +127,12 @@ a {
   box-sizing: content-box;
 }
 
-.default td.team_name.clickable {
+.default td.team-name.clickable {
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.default td.team_name.clickable:hover {
+.default td.team-name.clickable:hover {
   background-color: #1a1a1a;
   transform: scale(1.02);
 }

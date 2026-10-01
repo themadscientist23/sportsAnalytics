@@ -7,10 +7,10 @@ const withStats = (team, hasTies) => {
   const games = team.wins + team.losses + (hasTies ? team.ties : 0);
   return {
     ...team,
-    win_percentage: games > 0 ? (team.wins / games) * 100 : 0,
-    points_for_per_game: games > 0 ? team.points_for / games : 0,
-    points_against_per_game: games > 0 ? team.points_against / games : 0,
-    points_differential: games > 0 ? (team.points_for - team.points_against) / games : 0,
+    winPercentage: games > 0 ? (team.wins / games) * 100 : 0,
+    pointsForPerGame: games > 0 ? team.points_for / games : 0,
+    pointsAgainstPerGame: games > 0 ? team.points_against / games : 0,
+    pointsDifferential: games > 0 ? (team.points_for - team.points_against) / games : 0,
   };
 };
 
@@ -62,16 +62,16 @@ function StandingsPage({ league }) {
                 {sortableHeader("wins", "Wins")}
                 {sortableHeader("losses", "Losses")}
                 {hasTies && sortableHeader("ties", "Ties")}
-                {sortableHeader("win_percentage", "Win %")}
+                {sortableHeader("winPercentage", "Win %")}
                 {sortableHeader("points_for", "Points For")}
                 {sortableHeader("points_against", "Points Against")}
-                {sortableHeader("points_differential", "Point Differential")}
+                {sortableHeader("pointsDifferential", "Point Differential")}
               </tr>
             </thead>
             <tbody>
               {sortedTeams.map(team => (
                 <tr key={team.id}>
-                  <td className="team_name clickable" onClick={() => navigate(`/${league}/team/${team.abbreviation}`)}>
+                  <td className="team-name clickable" onClick={() => navigate(`/${league}/team/${team.abbreviation}`)}>
                     <img src={logoUrl(league, team.abbreviation)} alt={`${team.name} logo`} />
                     {team.name}
                   </td>
@@ -79,10 +79,10 @@ function StandingsPage({ league }) {
                   <td>{team.wins}</td>
                   <td>{team.losses}</td>
                   {hasTies && <td>{team.ties}</td>}
-                  <td>{team.win_percentage.toFixed(1)}</td>
-                  <td>{team.points_for_per_game.toFixed(1)}</td>
-                  <td>{team.points_against_per_game.toFixed(1)}</td>
-                  <td>{team.points_differential.toFixed(1)}</td>
+                  <td>{team.winPercentage.toFixed(1)}</td>
+                  <td>{team.pointsForPerGame.toFixed(1)}</td>
+                  <td>{team.pointsAgainstPerGame.toFixed(1)}</td>
+                  <td>{team.pointsDifferential.toFixed(1)}</td>
                 </tr>
               ))}
             </tbody>
