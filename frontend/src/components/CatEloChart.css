@@ -1,0 +1,10 @@
+.chart-container {
+  margin: 3em 0;
+  padding: 2em;
+  background: var(--surface-color);
+  border-radius: 12px;
+}
+
+.chart-container h2 {
+  margin-bottom: 1.5em;
+}

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { API_URL } from '../api.js';
-import { LEAGUES, logoUrl } from '../leagues.js';
+import { API_URL } from '../lib/api.js';
+import { LEAGUES, logoUrl } from '../lib/leagues.js';
+import './StandingsPage.css';
 
 const withStats = (team, hasTies) => {
   const games = team.wins + team.losses + (hasTies ? team.ties : 0);
@@ -52,8 +53,8 @@ function StandingsPage({ league }) {
   return (
     <>
       <h1>{title}</h1>
-      <div className = "default ">
-        <div className = "table-wrapper">
+      <div className="standings">
+        <div className="table-wrapper">
           <table>
             <thead>
               <tr>

@@ -1,3 +1,5 @@
+import './RecentGames.css';
+
 function RecentGames({ history }) {
   return (
     <div className="game-history">

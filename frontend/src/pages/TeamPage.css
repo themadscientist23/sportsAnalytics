@@ -1,0 +1,29 @@
+.team-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.back-button {
+  background: var(--title-gradient);
+  color: var(--text-color);
+  border: none;
+  padding: 0.75em 1.5em;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  margin-bottom: 2em;
+  transition: transform 0.2s;
+}
+
+.back-button:hover {
+  transform: scale(1.05);
+}
+
+.no-data {
+  text-align: center;
+  padding: 3em;
+  color: var(--muted-color);
+  font-size: 1.2em;
+}

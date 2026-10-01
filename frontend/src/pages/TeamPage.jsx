@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { API_URL } from '../api.js';
-import { LEAGUES } from '../leagues.js';
+import { API_URL } from '../lib/api.js';
+import { LEAGUES } from '../lib/leagues.js';
 import TeamHeader from '../components/TeamHeader.jsx';
 import CatEloChart from '../components/CatEloChart.jsx';
 import RecentGames from '../components/RecentGames.jsx';
+import './TeamPage.css';
 
 function TeamPage({ league }) {
   const { abbreviation } = useParams();

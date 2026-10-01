@@ -1,0 +1,101 @@
+.standings .table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.standings table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 80%;
+  border: 3px solid white;
+  border-radius: 12px;
+  font-size: 15px;
+  color: var(--text-color);
+  overflow: hidden;
+  margin: auto;
+}
+
+.standings th {
+  box-sizing: border-box;
+  background: var(--title-gradient);
+  color: var(--text-color);
+  padding: 1em 2em 1em 1.5em;
+  text-align: center;
+  border-bottom: 1px solid var(--text-color);
+  font-weight: 700;
+  position: relative;
+  cursor: pointer;
+}
+
+.standings th.sortable {
+  position: relative;
+}
+
+.standings th.sortable::after {
+  content: '';
+  font-size: 0.85em;
+  position: absolute;
+  right: 0.5em;
+  top: 50%;
+  transform-origin: center;
+  height: 12px;
+  width: 12px;
+}
+
+.standings th.sort-asc::after {
+  content: '▲';
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.2s ease;
+}
+
+.standings th.sort-desc::after {
+  content: '▲';
+  transform: translateY(-50%) rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.standings td {
+  background-color: var(--bg-color);
+  border: 1px solid var(--text-color);
+  padding: 0.5em 1em;
+  text-align: center;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.standings td:hover {
+  background-color: rgba(255, 166, 0, 0.311);
+}
+
+.standings td.catelo {
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.standings td.team-name {
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.standings td.team-name img {
+  height: 32px;
+  width: auto;
+  margin-right: 8px;
+  background-color: var(--logo-bg-color);
+  border-radius: 6px;
+  padding: 3px;
+  box-sizing: content-box;
+}
+
+.standings td.team-name.clickable {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.standings td.team-name.clickable:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.02);
+}

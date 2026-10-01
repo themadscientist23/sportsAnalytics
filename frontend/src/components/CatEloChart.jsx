@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import './CatEloChart.css';
 
 function CatEloChart({ history }) {
   const chartData = history.map((game) => ({

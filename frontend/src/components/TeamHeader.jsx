@@ -1,4 +1,5 @@
-import { logoUrl } from '../leagues.js';
+import { logoUrl } from '../lib/leagues.js';
+import './TeamHeader.css';
 
 function TeamHeader({ league, team }) {
   return (

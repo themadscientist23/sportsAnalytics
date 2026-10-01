@@ -1,0 +1,46 @@
+.game-history {
+  margin-top: 3em;
+  padding: 2em;
+  background: var(--surface-color);
+  border-radius: 12px;
+}
+
+.game-history h2 {
+  margin-bottom: 1.5em;
+}
+
+.game-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.game-item {
+  display: grid;
+  grid-template-columns: 150px 1fr 100px 100px;
+  gap: 1em;
+  padding: 1em;
+  background: var(--surface-subtle-color);
+  border-radius: 8px;
+  align-items: center;
+}
+
+.game-date {
+  color: var(--muted-color);
+  font-size: 0.9em;
+}
+
+.game-opponent {
+  font-weight: 500;
+}
+
+.game-score {
+  text-align: center;
+  font-weight: 500;
+}
+
+.game-catelo {
+  text-align: right;
+  color: var(--accent-color);
+  font-weight: 700;
+}
