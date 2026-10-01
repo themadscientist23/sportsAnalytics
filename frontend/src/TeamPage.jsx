@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { API_URL } from './api.js';
 import './index.css';
 
 function TeamPage({ league }) {
@@ -10,9 +11,9 @@ function TeamPage({ league }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/${league}/seasons`)
+    fetch(`${API_URL}/${league}/seasons`)
       .then(response => response.json())
-      .then(seasons => fetch(`http://127.0.0.1:8000/${league}/seasons/${seasons[seasons.length - 1]}/teams/${abbreviation}`))
+      .then(seasons => fetch(`${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams/${abbreviation}`))
       .then(response => response.json())
       .then(data => {
         setTeamData(data);

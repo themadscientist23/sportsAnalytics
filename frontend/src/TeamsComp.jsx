@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from './api.js';
 import './index.css';
 
 // Each league's teams table is identical apart from these bits.
@@ -16,9 +17,9 @@ function TeamsComp({ league }) {
   const [sort_config, setSortConfig] = useState({ key: 'null', direction: 'descending' });
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/${league}/seasons`)
+    fetch(`${API_URL}/${league}/seasons`)
       .then(response => response.json())
-      .then(seasons => fetch(`http://127.0.0.1:8000/${league}/seasons/${seasons[seasons.length - 1]}/teams`))
+      .then(seasons => fetch(`${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams`))
       .then(response => response.json())
       .then(data => {
         const modified = data.map(team => {
