@@ -5,7 +5,7 @@ import TeamsComp from './TeamsComp.jsx';
 import TeamPage from './TeamPage.jsx';
 
 function NotFound() {
-  return <h1>Error 404 - Airball</h1>;
+  return <h1>Error 404</h1>;
 }
 
 function App() {
