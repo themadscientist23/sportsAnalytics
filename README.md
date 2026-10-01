@@ -2,37 +2,23 @@
 
 Custom Elo ("CatElo") ratings for NBA, NFL, and MLB. FastAPI + MySQL backend, React frontend. Work in progress.
 
-## Before catelo stuff
+## Done
 
-- [ ] rebuild the mysql tables for the new schema. nothing in the repo makes tables yet, so write a `scripts/create_tables.py`
-- [ ] backfill every sport, run `python -m app.sports.process_games <sport>`, make sure standings + team pages actually work
-- [ ] fix the crontab path -> `backend/scripts/run_daily.zsh`
-- [ ] clean up the frontend: one api base url instead of `127.0.0.1:8000` everywhere, a season picker (always shows latest rn), kill unused imports
-- [ ] current season lives in two places (config `current_season` vs latest season in the db). pick one
-- [ ] `with SessionLocal()` vs `try/finally` + `close_session`?
-- [ ] tests?
+- fastAPI backend with endpoints for seasons, standings and team rating history
+- mySQL via SQLAlchemy, with per-sport models (NBA, NFL, MLB) built on shared base classes
+- game ingest from balldontlie: full-season backfill and a daily update
+- rating pipeline per sport, reset each season
+- react frontend with standings and team pages
+- backend organized as an `app` package, with env settings in `core/` and dependency-injected DB sessions
+- alembic migrations for the schema
+- ruff linting and a pytest setup
 
-## Then
+## ToDo
 
-- actually tune catelo per sport (still a placeholder)
-
-
-## How to run locally
-
-Backend:
-```
-cd backend
-cp .env.example .env 
-source venv/bin/activate
-uvicorn app.main:app --reload
-```
-
-Frontend:
-```
-cd frontend
-npm install
-npm run dev
-```
-
-
-*Runs at http://localhost:5173*
+- tag seasons to each game
+- `pydantic-settings` for config?
+- backfill and rate every sport
+- frontend cleanup: one API base URL, a season picker, remove unused imports
+- fix the daily cron path
+- tune CatElo per sport (placeholder right now)
+- more tests
