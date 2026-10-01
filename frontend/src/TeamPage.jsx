@@ -36,7 +36,7 @@ function TeamPage({ league }) {
   const { team, history } = teamData;
 
   // Prepare chart data
-  const chartData = history.map((game, index) => ({
+  const chartData = history.map((game) => ({
     date: new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
     catelo: Math.round(game.catelo),
     fullDate: game.date
