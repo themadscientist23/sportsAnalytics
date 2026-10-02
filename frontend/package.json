@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -22,6 +24,20 @@
     "eslint": "^10.11.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
-    "globals": "^17.13.0"
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9"
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
+    "trailingComma": "all",
+    "arrowParens": "always",
+    "tabWidth": 2,
+    "bracketSpacing": true,
+    "bracketSameLine": true,
+    "singleAttributePerLine": false,
+    "endOfLine": "lf"
   }
 }
