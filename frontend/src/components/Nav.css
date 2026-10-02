@@ -3,9 +3,9 @@
   justify-content: space-between; /* space between logo and nav links */
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, hsla(4, 93%, 67%, 1) 0%, hsla(29, 86%, 52%, 1) 100%);
+  background: linear-gradient(90deg, var(--brand-start-color) 0%, var(--brand-end-color) 100%);
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  color: white;
+  color: var(--text-color);
   transition: all 0.2s ease;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .main-nav .nav-links a {
-  color: white;
+  color: var(--text-color);
   text-decoration: none;
   font-weight: 600;
   position: relative;
@@ -35,7 +35,7 @@
   height: 2px;
   bottom: -4px;
   left: 0;
-  background-color: #ffcc66;
+  background-color: var(--highlight-color);
   transition: width 0.3s ease;
 }
 
@@ -44,6 +44,6 @@
 }
 
 .main-nav .nav-links a:hover {
-  color: #ffeb99;
+  color: var(--highlight-light-color);
   transform: scale(1.05);
 }
