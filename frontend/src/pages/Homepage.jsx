@@ -1,5 +1,4 @@
 function Homepage() {
-
   return (
     <>
       <h1>Welcome to the Sports Analytics Platform</h1>

@@ -6,7 +6,7 @@ function Nav() {
         <header>
             <nav className="main-nav">
                 <Link to="/" className="logo">
-                    <img src="/simplelogo.png" alt="Logo" />
+                    <img src="/simplelogo.png" alt="Sports Analytics Platform home" />
                 </Link>
                 <div className="nav-links">
                     <Link to="/nba">NBA</Link>

@@ -28,7 +28,7 @@ function StandingsPage({ league }) {
       .then(seasons => fetch(`${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams`))
       .then(response => response.json())
       .then(data => setTeams(data.map(team => withStats(team, hasTies))))
-      .catch(error => console.error('Houston: we have a problem:', error));
+      .catch(error => console.error('Error fetching standings:', error));
   }, [league, hasTies]);
 
   const sortBy = (key) => {

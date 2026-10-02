@@ -6,7 +6,6 @@ import TeamPage from './pages/TeamPage.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 function App() {
-
   return (
     <Router>
       <Nav />
