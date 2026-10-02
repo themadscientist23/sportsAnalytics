@@ -11,9 +11,9 @@ function App() {
       <Nav />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/nba" element={<StandingsPage league="nba" />} />
-        <Route path="/nfl" element={<StandingsPage league="nfl" />} />
-        <Route path="/mlb" element={<StandingsPage league="mlb" />} />
+        <Route path="/nba" element={<StandingsPage key="nba" league="nba" />} />
+        <Route path="/nfl" element={<StandingsPage key="nfl" league="nfl" />} />
+        <Route path="/mlb" element={<StandingsPage key="mlb" league="mlb" />} />
         <Route
           path="/nba/team/:abbreviation"
           element={<TeamPage league="nba" />}
