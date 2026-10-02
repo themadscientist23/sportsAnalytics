@@ -7,12 +7,17 @@
   border-collapse: separate;
   border-spacing: 0;
   width: 80%;
+  table-layout: fixed;
   border: 3px solid var(--text-color);
   border-radius: 12px;
   font-size: 15px;
   color: var(--text-color);
   overflow: hidden;
   margin: auto;
+}
+
+.standings .team-column {
+  width: 30%;
 }
 
 .standings th {
@@ -25,6 +30,7 @@
   font-weight: 700;
   position: relative;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .standings th.sortable {

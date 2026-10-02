@@ -70,6 +70,9 @@ function StandingsPage({ league }) {
       <div className="standings">
         <div className="table-wrapper">
           <table>
+            <colgroup>
+              <col className="team-column" />
+            </colgroup>
             <thead>
               <tr>
                 <th>Team</th>
@@ -78,12 +81,9 @@ function StandingsPage({ league }) {
                 {sortableHeader('losses', 'Losses')}
                 {hasTies && sortableHeader('ties', 'Ties')}
                 {sortableHeader('winPercentage', 'Win %')}
-                {sortableHeader('pointsForPerGame', 'Points Per Game')}
-                {sortableHeader(
-                  'pointsAgainstPerGame',
-                  'Points Allowed Per Game',
-                )}
-                {sortableHeader('pointsDifferential', 'Point Differential')}
+                {sortableHeader('pointsForPerGame', 'PPG')}
+                {sortableHeader('pointsAgainstPerGame', 'Opp PPG')}
+                {sortableHeader('pointsDifferential', 'Diff')}
               </tr>
             </thead>
             <tbody>
