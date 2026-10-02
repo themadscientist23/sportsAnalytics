@@ -14,9 +14,18 @@ function App() {
         <Route path="/nba" element={<StandingsPage league="nba" />} />
         <Route path="/nfl" element={<StandingsPage league="nfl" />} />
         <Route path="/mlb" element={<StandingsPage league="mlb" />} />
-        <Route path="/nba/team/:abbreviation" element={<TeamPage league="nba" />} />
-        <Route path="/nfl/team/:abbreviation" element={<TeamPage league="nfl" />} />
-        <Route path="/mlb/team/:abbreviation" element={<TeamPage league="mlb" />} />
+        <Route
+          path="/nba/team/:abbreviation"
+          element={<TeamPage league="nba" />}
+        />
+        <Route
+          path="/nfl/team/:abbreviation"
+          element={<TeamPage league="nfl" />}
+        />
+        <Route
+          path="/mlb/team/:abbreviation"
+          element={<TeamPage league="mlb" />}
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

@@ -12,7 +12,8 @@ const withStats = (team, hasTies) => {
     winPercentage: games > 0 ? (team.wins / games) * 100 : 0,
     pointsForPerGame: games > 0 ? team.points_for / games : 0,
     pointsAgainstPerGame: games > 0 ? team.points_against / games : 0,
-    pointsDifferential: games > 0 ? (team.points_for - team.points_against) / games : 0,
+    pointsDifferential:
+      games > 0 ? (team.points_for - team.points_against) / games : 0,
   };
 };
 
@@ -20,19 +21,29 @@ function StandingsPage({ league }) {
   const { title, hasTies } = LEAGUES[league];
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: 'catelo', direction: 'descending' });
+  const [sortConfig, setSortConfig] = useState({
+    key: 'catelo',
+    direction: 'descending',
+  });
 
   useEffect(() => {
     fetch(`${API_URL}/${league}/seasons`)
-      .then(response => response.json())
-      .then(seasons => fetch(`${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams`))
-      .then(response => response.json())
-      .then(data => setTeams(data.map(team => withStats(team, hasTies))))
-      .catch(error => console.error('Error fetching standings:', error));
+      .then((response) => response.json())
+      .then((seasons) =>
+        fetch(
+          `${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams`,
+        ),
+      )
+      .then((response) => response.json())
+      .then((data) => setTeams(data.map((team) => withStats(team, hasTies))))
+      .catch((error) => console.error('Error fetching standings:', error));
   }, [league, hasTies]);
 
   const sortBy = (key) => {
-    const direction = sortConfig.key === key && sortConfig.direction === 'descending' ? 'ascending' : 'descending';
+    const direction =
+      sortConfig.key === key && sortConfig.direction === 'descending'
+        ? 'ascending'
+        : 'descending';
     setSortConfig({ key, direction });
   };
 
@@ -46,7 +57,9 @@ function StandingsPage({ league }) {
   });
 
   const sortableHeader = (key, label) => (
-    <th onClick={() => sortBy(key)} className={`sortable ${sortConfig.key === key ? (sortConfig.direction === "ascending" ? "sort-asc" : "sort-desc") : ""}`}>
+    <th
+      onClick={() => sortBy(key)}
+      className={`sortable ${sortConfig.key === key ? (sortConfig.direction === 'ascending' ? 'sort-asc' : 'sort-desc') : ''}`}>
       {label}
     </th>
   );
@@ -60,21 +73,31 @@ function StandingsPage({ league }) {
             <thead>
               <tr>
                 <th>Team</th>
-                {sortableHeader("catelo", "CatElo")}
-                {sortableHeader("wins", "Wins")}
-                {sortableHeader("losses", "Losses")}
-                {hasTies && sortableHeader("ties", "Ties")}
-                {sortableHeader("winPercentage", "Win %")}
-                {sortableHeader("pointsForPerGame", "Points Per Game")}
-                {sortableHeader("pointsAgainstPerGame", "Points Allowed Per Game")}
-                {sortableHeader("pointsDifferential", "Point Differential")}
+                {sortableHeader('catelo', 'CatElo')}
+                {sortableHeader('wins', 'Wins')}
+                {sortableHeader('losses', 'Losses')}
+                {hasTies && sortableHeader('ties', 'Ties')}
+                {sortableHeader('winPercentage', 'Win %')}
+                {sortableHeader('pointsForPerGame', 'Points Per Game')}
+                {sortableHeader(
+                  'pointsAgainstPerGame',
+                  'Points Allowed Per Game',
+                )}
+                {sortableHeader('pointsDifferential', 'Point Differential')}
               </tr>
             </thead>
             <tbody>
-              {sortedTeams.map(team => (
+              {sortedTeams.map((team) => (
                 <tr key={team.id}>
-                  <td className="team-name clickable" onClick={() => navigate(`/${league}/team/${team.abbreviation}`)}>
-                    <img src={logoUrl(league, team.abbreviation)} alt={`${team.name} logo`} />
+                  <td
+                    className="team-name clickable"
+                    onClick={() =>
+                      navigate(`/${league}/team/${team.abbreviation}`)
+                    }>
+                    <img
+                      src={logoUrl(league, team.abbreviation)}
+                      alt={`${team.name} logo`}
+                    />
                     {team.name}
                   </td>
                   <td className="catelo">{formatCatelo(team.catelo)}</td>

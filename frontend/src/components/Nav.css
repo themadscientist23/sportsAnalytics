@@ -3,8 +3,12 @@
   justify-content: space-between; /* space between logo and nav links */
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, var(--brand-start-color) 0%, var(--brand-end-color) 100%);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: linear-gradient(
+    90deg,
+    var(--brand-start-color) 0%,
+    var(--brand-end-color) 100%
+  );
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   color: var(--text-color);
   transition: all 0.2s ease;
 }
@@ -12,7 +16,6 @@
 .main-nav .logo img {
   height: 40px;
   width: auto;
-  
 }
 
 .main-nav .nav-links {

@@ -3,7 +3,7 @@
 :root {
   --bg-color: #000000;
   --text-color: #ffffff;
-  --accent-color: #FFA600;
+  --accent-color: #ffa600;
   --accent-hover-color: rgba(255, 166, 0, 0.311);
   --highlight-color: #ffcc66;
   --highlight-light-color: #ffeb99;
@@ -14,7 +14,11 @@
   --logo-bg-color: #f0f0f0;
   --brand-start-color: hsla(4, 93%, 67%, 1);
   --brand-end-color: hsla(29, 86%, 52%, 1);
-  --title-gradient: linear-gradient(0deg, var(--brand-start-color) 0%, var(--brand-end-color) 100%);
+  --title-gradient: linear-gradient(
+    0deg,
+    var(--brand-start-color) 0%,
+    var(--brand-end-color) 100%
+  );
 }
 
 html {
@@ -29,7 +33,9 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-align: center;
   background: var(--title-gradient);
   background-clip: text;

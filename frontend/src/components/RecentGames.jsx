@@ -6,18 +6,19 @@ function RecentGames({ history }) {
     <div className="game-history">
       <h2>Recent Games</h2>
       <div className="game-list">
-        {history.slice(-10).reverse().map((game, index) => (
-          <div key={index} className="game-item">
-            <span className="game-date">
-              {formatLongDate(game.date)}
-            </span>
-            <span className="game-opponent">
-              {game.home ? 'vs' : '@'} {game.opponent}
-            </span>
-            <span className="game-score">{game.score}</span>
-            <span className="game-catelo">{formatCatelo(game.catelo)}</span>
-          </div>
-        ))}
+        {history
+          .slice(-10)
+          .reverse()
+          .map((game, index) => (
+            <div key={index} className="game-item">
+              <span className="game-date">{formatLongDate(game.date)}</span>
+              <span className="game-opponent">
+                {game.home ? 'vs' : '@'} {game.opponent}
+              </span>
+              <span className="game-score">{game.score}</span>
+              <span className="game-catelo">{formatCatelo(game.catelo)}</span>
+            </div>
+          ))}
       </div>
     </div>
   );

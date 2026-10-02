@@ -4,4 +4,5 @@ export const LEAGUES = {
   mlb: { title: 'MLB Teams', hasTies: false },
 };
 
-export const logoUrl = (league, abbreviation) => `/logos/${league}/${abbreviation}.png`;
+export const logoUrl = (league, abbreviation) =>
+  `/logos/${league}/${abbreviation}.png`;

@@ -15,14 +15,18 @@ function TeamPage({ league }) {
 
   useEffect(() => {
     fetch(`${API_URL}/${league}/seasons`)
-      .then(response => response.json())
-      .then(seasons => fetch(`${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams/${abbreviation}`))
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((seasons) =>
+        fetch(
+          `${API_URL}/${league}/seasons/${seasons[seasons.length - 1]}/teams/${abbreviation}`,
+        ),
+      )
+      .then((response) => response.json())
+      .then((data) => {
         setTeamData(data);
         setLoading(false);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error fetching team data:', error);
         setLoading(false);
       });
