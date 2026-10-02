@@ -65,8 +65,8 @@ function StandingsPage({ league }) {
                 {sortableHeader("losses", "Losses")}
                 {hasTies && sortableHeader("ties", "Ties")}
                 {sortableHeader("winPercentage", "Win %")}
-                {sortableHeader("points_for", "Points For")}
-                {sortableHeader("points_against", "Points Against")}
+                {sortableHeader("pointsForPerGame", "Points Per Game")}
+                {sortableHeader("pointsAgainstPerGame", "Points Allowed Per Game")}
                 {sortableHeader("pointsDifferential", "Point Differential")}
               </tr>
             </thead>
