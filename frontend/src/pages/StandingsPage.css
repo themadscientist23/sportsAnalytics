@@ -7,6 +7,7 @@
   border-collapse: separate;
   border-spacing: 0;
   width: 80%;
+  min-width: 960px;
   table-layout: fixed;
   border: 3px solid var(--text-color);
   border-radius: 12px;
@@ -24,7 +25,7 @@
   box-sizing: border-box;
   background: var(--title-gradient);
   color: var(--text-color);
-  padding: 1em 2em 1em 1.5em;
+  padding: 1em 1.5em 1em 0.75em;
   text-align: center;
   border-bottom: 1px solid var(--text-color);
   font-weight: 700;
