@@ -6,16 +6,14 @@ uvicorn==0.36.0
 SQLAlchemy==2.0.43
 mysql-connector-python==9.4.0
 
-# NBA API client
+# Sports data API client
 balldontlie==0.1.6
 
 # Environment variables
 python-dotenv==1.1.1
 
-# HTTP requests
-httpx==0.28.1
-
 # Dev
+httpx==0.28.1
 pytest==9.1.1
 ruff==0.16.9
 
