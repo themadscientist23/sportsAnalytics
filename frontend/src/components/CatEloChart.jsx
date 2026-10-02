@@ -1,9 +1,10 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { formatShortDate } from '../lib/format.js';
 import './CatEloChart.css';
 
 function CatEloChart({ history }) {
   const chartData = history.map((game) => ({
-    date: new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    date: formatShortDate(game.date),
     catelo: Math.round(game.catelo),
     fullDate: game.date,
   }));

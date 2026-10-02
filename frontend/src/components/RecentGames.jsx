@@ -1,4 +1,4 @@
-import { formatCatelo } from '../lib/format.js';
+import { formatCatelo, formatLongDate } from '../lib/format.js';
 import './RecentGames.css';
 
 function RecentGames({ history }) {
@@ -9,11 +9,7 @@ function RecentGames({ history }) {
         {history.slice(-10).reverse().map((game, index) => (
           <div key={index} className="game-item">
             <span className="game-date">
-              {new Date(game.date).toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-              })}
+              {formatLongDate(game.date)}
             </span>
             <span className="game-opponent">
               {game.home ? 'vs' : '@'} {game.opponent}
