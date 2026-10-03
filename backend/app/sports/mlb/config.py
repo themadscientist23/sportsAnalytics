@@ -1,4 +1,3 @@
-from app.provider.api_client import api
 from app.sports.mlb.models import MLBGame, MLBGameRating, MLBTeam
 from app.sports.mlb.process_games import process_game
 
@@ -21,7 +20,6 @@ MLB_CONFIG = {
     "team_model": MLBTeam,
     "game_model": MLBGame,
     "rating_model": MLBGameRating,
-    "games_api": lambda: api.mlb.games,
     "is_final": lambda g: g.get("status") == "STATUS_FINAL",
     "extract": _extract,
     "process_game": process_game,

@@ -1,4 +1,3 @@
-from app.provider.api_client import api
 from app.sports.nba.models import NBAGame, NBAGameRating, NBATeam
 from app.sports.nba.process_games import process_game
 
@@ -21,7 +20,6 @@ NBA_CONFIG = {
     "team_model": NBATeam,
     "game_model": NBAGame,
     "rating_model": NBAGameRating,
-    "games_api": lambda: api.nba.games,
     "is_final": lambda g: g.get("status") == "Final",
     "extract": _extract,
     "process_game": process_game,
