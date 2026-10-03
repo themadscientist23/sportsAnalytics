@@ -25,6 +25,17 @@ def _is_excluded(game_data, fields):
     )
 
 
+def _mark_games_past_regular_season(session, config, season):
+    game_model = config["game_model"]
+    games = session.query(game_model).filter(game_model.season == season).order_by(game_model.date, game_model.id).all()
+
+    played = {}
+    for game in games:
+        played[game.home_team_id] = played.get(game.home_team_id, 0) + 1
+        if played[game.home_team_id] > config["regular_season_games"]:
+            game.postseason = True
+
+
 def ingest_games(sport, season, dates=None, request_delay=60):
     config = SPORTS[sport]
     team_model = config["team_model"]
@@ -77,6 +88,9 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                 if not cursor:
                     break
                 time.sleep(request_delay)
+
+            _mark_games_past_regular_season(session, config, season)
+            session.commit()
 
             print(
                 f"[{sport}:{season}] Done. Added {added_count} games, "

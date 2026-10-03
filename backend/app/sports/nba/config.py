@@ -23,5 +23,6 @@ NBA_CONFIG = {
     "is_final": lambda g: g.get("status") == "Final",
     "extract": _extract,
     "process_game": process_game,
+    "regular_season_games": 82,
     "current_season": 2025,
 }
