@@ -31,6 +31,7 @@ def _mark_games_past_regular_season(session, config, season):
 
     played = {}
     for game in games:
+        played[game.away_team_id] = played.get(game.away_team_id, 0) + 1
         played[game.home_team_id] = played.get(game.home_team_id, 0) + 1
         if played[game.home_team_id] > config["regular_season_games"]:
             game.postseason = True
