@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 
 from app.db.session import SessionLocal
+from app.provider.api_client import list_games
 from app.sports.config import SPORTS
 
 
@@ -15,28 +16,35 @@ def _create_or_update_team(session, team_model, team_data):
     team.abbreviation = team_data["abbreviation"]
 
 
+def _is_excluded(game_data, fields):
+    return (
+        game_data.get("season_type") == "spring_training"
+        or game_data.get("ist_stage") == "Championship"
+        or fields["home_team"]["id"] < 0
+        or fields["away_team"]["id"] < 0
+    )
+
+
 def ingest_games(sport, season, dates=None, request_delay=60):
     config = SPORTS[sport]
-    games_api = config["games_api"]()
     team_model = config["team_model"]
     game_model = config["game_model"]
 
     added_count = 0
     skipped_count = 0
+    excluded_count = 0
     cursor = None
 
     with SessionLocal() as session:
         try:
             while True:
                 print(f"[{sport}:{season}] Fetching next page...")
-                games_page = games_api.list(seasons=[season], per_page=100, cursor=cursor, dates=dates)
-                page_games = games_page.data
+                games_page = list_games(sport, [season], 100, cursor=cursor, dates=dates)
+                page_games = games_page["data"]
                 if not page_games:
                     break
 
-                for g in page_games:
-                    game_data = g.model_dump()
-
+                for game_data in page_games:
                     if not config["is_final"](game_data):
                         skipped_count += 1
                         continue
@@ -46,6 +54,10 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                         continue
 
                     fields = config["extract"](game_data)
+                    if _is_excluded(game_data, fields):
+                        excluded_count += 1
+                        continue
+
                     _create_or_update_team(session, team_model, fields["home_team"])
                     _create_or_update_team(session, team_model, fields["away_team"])
 
@@ -61,12 +73,15 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                     added_count += 1
 
                 session.commit()
-                cursor = games_page.meta.next_cursor
+                cursor = games_page["meta"].get("next_cursor")
                 if not cursor:
                     break
                 time.sleep(request_delay)
 
-            print(f"[{sport}:{season}] Done. Added {added_count} games, skipped {skipped_count} non-final.")
+            print(
+                f"[{sport}:{season}] Done. Added {added_count} games, "
+                f"skipped {skipped_count} non-final, excluded {excluded_count}."
+            )
             return added_count
 
         except Exception as e:
