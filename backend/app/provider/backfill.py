@@ -1,6 +1,6 @@
 import argparse
 import time
-from datetime import datetime
+from datetime import date
 
 from app.db.session import SessionLocal
 from app.provider.api_client import list_games
@@ -49,63 +49,56 @@ def ingest_games(sport, season=None, dates=None, request_delay=60):
     cursor = None
 
     with SessionLocal() as session:
-        try:
-            while True:
-                print(f"[{sport}] Fetching next page...")
-                games_page = list_games(sport, 100, season=season, cursor=cursor, dates=dates)
-                page_games = games_page["data"]
-                if not page_games:
-                    break
+        while True:
+            print(f"[{sport}] Fetching next page...")
+            games_page = list_games(sport, 100, season=season, cursor=cursor, dates=dates)
+            page_games = games_page["data"]
+            if not page_games:
+                break
 
-                for game_data in page_games:
-                    if not config["is_final"](game_data):
-                        skipped_count += 1
-                        continue
+            for game_data in page_games:
+                if not config["is_final"](game_data):
+                    skipped_count += 1
+                    continue
 
-                    game_id = game_data["id"]
-                    if session.get(game_model, game_id):
-                        continue
+                game_id = game_data["id"]
+                if session.get(game_model, game_id):
+                    continue
 
-                    fields = config["extract"](game_data)
-                    if _is_excluded(game_data, fields):
-                        excluded_count += 1
-                        continue
+                fields = config["extract"](game_data)
+                if _is_excluded(game_data, fields):
+                    excluded_count += 1
+                    continue
 
-                    _create_or_update_team(session, team_model, fields["home_team"])
-                    _create_or_update_team(session, team_model, fields["away_team"])
+                _create_or_update_team(session, team_model, fields["home_team"])
+                _create_or_update_team(session, team_model, fields["away_team"])
 
-                    session.add(
-                        game_model(
-                            id=game_id,
-                            season=game_data["season"],
-                            date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
-                            postseason=bool(game_data.get("postseason")),
-                            **fields["game"],
-                        )
+                session.add(
+                    game_model(
+                        id=game_id,
+                        season=game_data["season"],
+                        date=date.fromisoformat(game_data["date"][:10]),
+                        postseason=bool(game_data.get("postseason")),
+                        **fields["game"],
                     )
-                    added_count += 1
-                    added_season = game_data["season"]
+                )
+                added_count += 1
+                added_season = game_data["season"]
 
-                session.commit()
-                cursor = games_page["meta"].get("next_cursor")
-                if not cursor:
-                    break
-                time.sleep(request_delay)
-
-            if added_season:
-                _mark_games_past_regular_season(session, config, added_season)
             session.commit()
+            cursor = games_page["meta"].get("next_cursor")
+            if not cursor:
+                break
+            time.sleep(request_delay)
 
-            print(
-                f"[{sport}] Done. Added {added_count} games, "
-                f"skipped {skipped_count} non-final, excluded {excluded_count}."
-            )
-            return added_count
+        if added_season:
+            _mark_games_past_regular_season(session, config, added_season)
+        session.commit()
 
-        except Exception as e:
-            session.rollback()
-            print(f"[{sport}] Error: {e}")
-            raise
+        print(
+            f"[{sport}] Done. Added {added_count} games, skipped {skipped_count} non-final, excluded {excluded_count}."
+        )
+        return added_count
 
 
 if __name__ == "__main__":
