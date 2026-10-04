@@ -1,7 +1,10 @@
 import argparse
+import logging
 
 from app.db.session import SessionLocal
 from app.sports.config import SPORTS
+
+logger = logging.getLogger(__name__)
 
 INITIAL_CATELO = 1000.0
 
@@ -53,11 +56,12 @@ def process_games(sport):
     with SessionLocal() as session:
         for season in _seasons_with_unrated_games(session, config["game_model"], config["rating_model"]):
             count = _process_season(session, config, season)
-            print(f"[{sport}:{season}] Rated {count} games.")
+            logger.info(f"[{sport}:{season}] Rated {count} games.")
         session.commit()
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description="Rate every regular-season game in seasons that have unrated games.")
     parser.add_argument("sport", choices=SPORTS.keys())
     args = parser.parse_args()

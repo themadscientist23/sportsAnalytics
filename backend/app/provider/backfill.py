@@ -1,10 +1,13 @@
 import argparse
+import logging
 import time
 from datetime import date
 
 from app.db.session import SessionLocal
 from app.provider.api_client import list_games
 from app.sports.config import SPORTS
+
+logger = logging.getLogger(__name__)
 
 
 def _create_or_update_team(session, team_model, team_data):
@@ -50,7 +53,7 @@ def ingest_games(sport, season=None, dates=None, request_delay=60):
 
     with SessionLocal() as session:
         while True:
-            print(f"[{sport}] Fetching next page...")
+            logger.info(f"[{sport}] Fetching next page...")
             games_page = list_games(sport, 100, season=season, cursor=cursor, dates=dates)
             page_games = games_page["data"]
             if not page_games:
@@ -95,13 +98,14 @@ def ingest_games(sport, season=None, dates=None, request_delay=60):
             _mark_games_past_regular_season(session, config, added_season)
         session.commit()
 
-        print(
+        logger.info(
             f"[{sport}] Done. Added {added_count} games, skipped {skipped_count} non-final, excluded {excluded_count}."
         )
         return added_count
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     parser = argparse.ArgumentParser(description="Backfill historical games for a sport/season.")
     parser.add_argument("sport", choices=SPORTS.keys())
     parser.add_argument("season", type=int)
