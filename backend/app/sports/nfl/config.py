@@ -24,5 +24,4 @@ NFL_CONFIG = {
     "extract": _extract,
     "process_game": process_game,
     "regular_season_games": 17,
-    "current_season": 2026,
 }

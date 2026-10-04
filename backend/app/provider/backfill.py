@@ -37,7 +37,7 @@ def _mark_games_past_regular_season(session, config, season):
             game.postseason = True
 
 
-def ingest_games(sport, season, dates=None, request_delay=60):
+def ingest_games(sport, season=None, dates=None, request_delay=60):
     config = SPORTS[sport]
     team_model = config["team_model"]
     game_model = config["game_model"]
@@ -45,13 +45,14 @@ def ingest_games(sport, season, dates=None, request_delay=60):
     added_count = 0
     skipped_count = 0
     excluded_count = 0
+    added_season = None
     cursor = None
 
     with SessionLocal() as session:
         try:
             while True:
-                print(f"[{sport}:{season}] Fetching next page...")
-                games_page = list_games(sport, [season], 100, cursor=cursor, dates=dates)
+                print(f"[{sport}] Fetching next page...")
+                games_page = list_games(sport, 100, season=season, cursor=cursor, dates=dates)
                 page_games = games_page["data"]
                 if not page_games:
                     break
@@ -76,13 +77,14 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                     session.add(
                         game_model(
                             id=game_id,
-                            season=season,
+                            season=game_data["season"],
                             date=datetime.strptime(game_data["date"][:10], "%Y-%m-%d").date(),
                             postseason=bool(game_data.get("postseason")),
                             **fields["game"],
                         )
                     )
                     added_count += 1
+                    added_season = game_data["season"]
 
                 session.commit()
                 cursor = games_page["meta"].get("next_cursor")
@@ -90,18 +92,19 @@ def ingest_games(sport, season, dates=None, request_delay=60):
                     break
                 time.sleep(request_delay)
 
-            _mark_games_past_regular_season(session, config, season)
+            if added_season:
+                _mark_games_past_regular_season(session, config, added_season)
             session.commit()
 
             print(
-                f"[{sport}:{season}] Done. Added {added_count} games, "
+                f"[{sport}] Done. Added {added_count} games, "
                 f"skipped {skipped_count} non-final, excluded {excluded_count}."
             )
             return added_count
 
         except Exception as e:
             session.rollback()
-            print(f"[{sport}:{season}] Error: {e}")
+            print(f"[{sport}] Error: {e}")
             raise
 
 

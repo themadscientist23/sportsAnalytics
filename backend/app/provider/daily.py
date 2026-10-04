@@ -6,18 +6,15 @@ from app.sports.config import SPORTS
 
 
 def daily_update(sport, request_delay=60):
-    config = SPORTS[sport]
-    season = config["current_season"]
-
     today = datetime.today().date()
     start_date = today - timedelta(days=2)
     date_range = [(start_date + timedelta(days=i)).isoformat() for i in range((today - start_date).days + 1)]
 
-    return ingest_games(sport, season, request_delay=request_delay, dates=date_range)
+    return ingest_games(sport, dates=date_range, request_delay=request_delay)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Fetch the last 2 days of games for a sport's current season.")
+    parser = argparse.ArgumentParser(description="Fetch the last 2 days of games for a sport.")
     parser.add_argument("sport", choices=SPORTS.keys())
     parser.add_argument("--request-delay", type=float, default=60)
     args = parser.parse_args()
